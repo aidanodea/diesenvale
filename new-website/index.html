@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<title>Diesenvale Home</title>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700;800&amp;family=Archivo:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* ========== Diesenvale — brutalist industrial ========== */
+
+:root {
+  /* Default palette: Bone / Ink / Signal Yellow */
+  --bg: #EFEAE0;
+  --fg: #0A0A0A;
+  --muted: #6E6A60;
+  --rule: #0A0A0A;
+  --accent: #FFD400;
+  --accent-fg: #0A0A0A;
+  --panel: #E5DFD2;
+  --inv-bg: #0A0A0A;
+  --inv-fg: #EFEAE0;
+}
+
+[data-palette="caution"] {
+  --bg: #E8E5DD;
+  --fg: #0F0F0F;
+  --muted: #6A675F;
+  --rule: #0F0F0F;
+  --accent: #FF4D00;
+  --accent-fg: #FFFFFF;
+  --panel: #DCD8CE;
+  --inv-bg: #0F0F0F;
+  --inv-fg: #E8E5DD;
+}
+
+[data-palette="acid"] {
+  --bg: #131313;
+  --fg: #ECE9E0;
+  --muted: #8C8A82;
+  --rule: #ECE9E0;
+  --accent: #C8FF00;
+  --accent-fg: #0A0A0A;
+  --panel: #1C1C1C;
+  --inv-bg: #ECE9E0;
+  --inv-fg: #0A0A0A;
+}
+
+[data-palette="steel"] {
+  --bg: #DDE2E5;
+  --fg: #0E1922;
+  --muted: #5A6670;
+  --rule: #0E1922;
+  --accent: #0047FF;
+  --accent-fg: #FFFFFF;
+  --panel: #CDD4D9;
+  --inv-bg: #0E1922;
+  --inv-fg: #DDE2E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body { min-height: 100vh; }
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+input, select, textarea { font: inherit; color: inherit; background: transparent; border: none; outline: none; }
+
+/* ---------- type ---------- */
+
+.headline {
+  font-family: "Archivo Narrow", "Archivo", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ---------- structure ---------- */
+
+.page { max-width: 1680px; margin: 0 auto; padding: 0 32px; }
+.rule { background: var(--rule); height: 1px; width: 100%; }
+.rule-thick { background: var(--rule); height: 6px; width: 100%; }
+
+.row { display: flex; }
+.col { display: flex; flex-direction: column; }
+.between { justify-content: space-between; }
+.center { align-items: center; }
+
+/* ---------- nav ---------- */
+
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 14px 32px;
+  gap: 24px;
+}
+.nav-logo {
+  font-family: "Archivo Narrow", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo .dot { width: 10px; height: 10px; background: var(--accent); display: inline-block; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 6px 2px;
+  border-bottom: 2px solid transparent;
+}
+.nav-links a:hover { border-bottom-color: var(--accent); }
+.nav-links a.active { border-bottom-color: var(--fg); }
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.nav-cta {
+  background: var(--accent);
+  color: var(--accent-fg);
+  padding: 8px 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.nav-cta:hover { background: var(--fg); color: var(--bg); }
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 22px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border: 1px solid var(--fg);
+  transition: 0.12s ease;
+}
+.btn-primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.btn-primary:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn-ghost { background: transparent; color: var(--fg); }
+.btn-ghost:hover { background: var(--fg); color: var(--bg); }
+.btn-inv { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn-inv:hover { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+
+.btn .arr { font-size: 16px; line-height: 1; }
+
+/* ---------- placeholder image ---------- */
+
+.ph {
+  position: relative;
+  background: var(--panel);
+  overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 12px;
+  color: var(--fg);
+  border: 1px solid var(--rule);
+}
+.ph::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 14px,
+    rgba(10,10,10,0.06) 14px 15px
+  );
+}
+[data-palette="acid"] .ph::before {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 14px,
+    rgba(236,233,224,0.08) 14px 15px
+  );
+}
+.ph-label {
+  position: relative;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--bg);
+  padding: 4px 8px;
+  border: 1px solid var(--rule);
+}
+.ph-meta {
+  position: relative;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* ---------- ticker / marquee ---------- */
+
+.ticker {
+  background: var(--fg);
+  color: var(--bg);
+  overflow: hidden;
+  border-top: 1px solid var(--fg);
+  border-bottom: 1px solid var(--fg);
+}
+.ticker-track {
+  display: flex;
+  gap: 64px;
+  white-space: nowrap;
+  padding: 14px 0;
+  animation: tick 40s linear infinite;
+  font-family: "Archivo Narrow", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.ticker-track span { display: inline-flex; align-items: center; gap: 24px; }
+.ticker-track span::after {
+  content: "■";
+  color: var(--accent);
+  font-size: 14px;
+}
+@keyframes tick {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- footer ---------- */
+
+.footer { background: var(--inv-bg); color: var(--inv-fg); margin-top: 80px; }
+.footer-inner { padding: 60px 32px 28px; max-width: 1680px; margin: 0 auto; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+.footer-title {
+  font-family: "Archivo Narrow", sans-serif;
+  font-size: 64px;
+  text-transform: uppercase;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+}
+.footer h4 {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+[data-palette="acid"] .footer h4 { color: rgba(10,10,10,0.55); }
+.footer ul { list-style: none; }
+.footer ul li { padding: 6px 0; font-size: 14px; }
+.footer ul li a:hover { color: var(--accent); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  margin-top: 48px;
+  padding-top: 20px;
+  display: flex; justify-content: space-between;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.6);
+}
+[data-palette="acid"] .footer-bottom { border-top-color: rgba(10,10,10,0.2); color: rgba(10,10,10,0.6); }
+
+/* ---------- spec table ---------- */
+
+.spec {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  width: 100%;
+  border-collapse: collapse;
+}
+.spec td { padding: 9px 0; border-bottom: 1px dashed var(--rule); vertical-align: top; }
+.spec td:first-child { color: var(--muted); width: 45%; padding-right: 12px; }
+.spec td:last-child { text-align: right; font-weight: 600; }
+
+/* ---------- tags / chips ---------- */
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--rule);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.12s;
+}
+.chip:hover { background: var(--fg); color: var(--bg); }
+.chip.active { background: var(--fg); color: var(--bg); }
+.chip.accent { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+
+/* ---------- card ---------- */
+
+.card {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  padding: 24px;
+}
+
+/* ---------- field ---------- */
+
+.field {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--rule);
+  padding: 14px 16px;
+  background: var(--bg);
+}
+.field label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.field input, .field textarea, .field select {
+  font-size: 15px;
+  background: transparent;
+  width: 100%;
+}
+
+/* ---------- focus ---------- */
+
+::selection { background: var(--accent); color: var(--accent-fg); }
+
+a.sector-row:hover{background:var(--fg)!important;color:var(--bg)!important;padding:26px 24px!important}
+.pc:hover{background:var(--fg)!important;color:var(--bg)!important}
+a.sp:hover{background:var(--fg)!important;color:var(--bg)!important}
+
+</style>
+
+</head>
+<body>
+
+
+<div data-palette="bone" style="position:relative;background:var(--bg);color:var(--fg);font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.4">
+<div><nav class="nav"><div class="nav-inner"><div class="row center" style="gap:32px"><a href="index.html" class="nav-logo"><span class="dot"></span>DIESENVALE<span class="mono" style="font-size:11px;color:var(--muted);font-weight:400;margin-left:4px">EST. 1983</span></a></div><div class="nav-links"><a href="index.html" class="active">Home</a><a href="Configurator.html" class="">Configurator</a><a href="Portfolio.html" class="">Portfolio</a><a href="About.html" class="">About</a><a href="Contact.html" class="">Contact</a></div><div class="nav-right"><span class="mono">CHARLEVILLE · CO. CORK · IE</span><a href="Configurator.html" class="nav-cta">Start Build →</a></div></div></nav><div><section class="page" style="padding-top:32px;padding-bottom:64px"><div class="row between" style="align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:16px"><div class="row" style="gap:18px;align-items:center"><span class="mono" style="font-size:11px;padding:4px 8px;background:var(--fg);color:var(--bg)">FILE 00 · HOME</span><span class="eyebrow">Stainless Steel Fabrication // Est. 1983</span></div><span class="mono" style="font-size:11px;color:var(--muted)">43 YRS / 1,047 PROJECTS / 12 STAFF / N52°41′W08°41′</span></div><h1 class="headline" style="font-size:clamp(80px, 14vw, 240px);margin-bottom:24px">WE BUILD<br><span style="color:var(--muted)">THE TANKS</span><br>YOU RELY ON<br><span style="display:inline-block;line-height:0.8;padding-top:0.06em;background:var(--accent);color:var(--accent-fg);padding:0.06em 0.06em 0">DAILY.</span></h1><div class="row between" style="flex-wrap:wrap;gap:32px;margin-top:24px"><p style="max-width:560px;font-size:18px;line-height:1.4">Stainless process tanks and road tankers, designed and fabricated in Charleville for the dairy, brewing, pharma, chemical and food sectors. No catalogues and nothing off-the-shelf. Every vessel is designed, built and certified to your spec.</p><div class="row" style="gap:12px;align-items:center;flex-wrap:wrap"><a href="Configurator.html" class="btn btn-primary">Configure a vessel <span class="arr">→</span></a><a href="Portfolio.html" class="btn btn-ghost">See the portfolio</a></div></div><div class="rule-thick" style="margin:64px 0 24px"></div><div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;height:460px"><div class="ph"><span class="ph-label">HERO 01 / SILO BANK</span><span class="ph-meta">DAIRY · 30,000 L × 4</span></div><div class="ph"><span class="ph-label">HERO 02 / WELDER</span><span class="ph-meta">TIG · 316L</span></div><div class="ph"><span class="ph-label">HERO 03 / ROAD TANKER</span><span class="ph-meta">3-AXLE · 28,000 L</span></div></div></section><div class="ticker"><div class="ticker-track"><span>STAINLESS 304 / 316L</span><span>FROM 50 L TO 250,000 L</span><span>FULL TRACEABILITY</span><span>EN 13445 / PED</span><span>3-A SANITARY</span><span>ATEX CERTIFIED</span><span>ISO 9001:2015</span><span>BUILT IN CHARLEVILLE</span><span>STAINLESS 304 / 316L</span><span>FROM 50 L TO 250,000 L</span><span>FULL TRACEABILITY</span><span>EN 13445 / PED</span><span>3-A SANITARY</span><span>ATEX CERTIFIED</span><span>ISO 9001:2015</span><span>BUILT IN CHARLEVILLE</span></div></div><section class="page" style="padding-top:80px;padding-bottom:40px"><div class="col" style="gap:32px;margin-bottom:40px"><div class="rule"></div><div class="row between" style="gap:40px;align-items:flex-end;flex-wrap:wrap"><div class="col" style="gap:16px"><div class="row" style="gap:12px;align-items:center"><span class="mono" style="font-size:11px;background:var(--fg);color:var(--bg);padding:3px 7px">01</span><span class="eyebrow">What we make</span></div><h2 class="headline" style="font-size:clamp(56px, 7vw, 120px)">EIGHT&nbsp;DISCIPLINES.<br>ONE&nbsp;WORKSHOP.</h2></div><div style="max-width:420px"><p style="font-size:15px;line-height:1.5">We don't specialise — we generalise hard. Forty-three years of moving between hygiene-critical dairy, ATEX chemical and pressure-rated brewing means every discipline informs the next.</p></div></div></div><div style="border-top:1px solid var(--rule)"><a href="Sector-dairy.html" class="row center between sector-row" style="padding:26px 0;border-bottom:1px solid var(--rule);position:relative;transition:background 0.15s;background:transparent;color:var(--fg)"><div class="row center" style="gap:36px;flex:1"><span class="mono" style="font-size:12px;opacity:0.6;width:24px">01</span><span class="headline" style="font-size:64px;line-height:0.9">Dairy</span></div><div class="row center" style="gap:36px"><span class="mono" style="font-size:13px;opacity:0.7;max-width:360px;text-align:right">Bulk milk silos, cream tanks, whey vessels, cheese vats.</span><span class="headline" style="font-size:36px">→</span></div></a><a href="Sector-brewing.html" class="row center between sector-row" style="padding:26px 0;border-bottom:1px solid var(--rule);position:relative;transition:background 0.15s;background:transparent;color:var(--fg)"><div class="row center" style="gap:36px;flex:1"><span class="mono" style="font-size:12px;opacity:0.6;width:24px">02</span><span class="headline" style="font-size:64px;line-height:0.9">Brewing</span></div><div class="row center" style="gap:36px"><span class="mono" style="font-size:13px;opacity:0.7;max-width:360px;text-align:right">Fermenters, brite tanks, whirlpools, hot &amp; cold liquor.</span><span class="headline" style="font-size:36px">→</span></div></a><a href="Sector-pharma.html" class="row center between sector-row" style="padding:26px 0;border-bottom:1px solid var(--rule);position:relative;transition:background 0.15s;background:transparent;color:var(--fg)"><div class="row center" style="gap:36px;flex:1"><span class="mono" style="font-size:12px;opacity:0.6;width:24px">03</span><span class="headline" style="font-size:64px;line-height:0.9">Pharma</span></div><div class="row center" style="gap:36px"><span class="mono" style="font-size:13px;opacity:0.7;max-width:360px;text-align:right">GMP vessels, mixing tanks, mirror-polished &amp; passivated.</span><span class="headline" style="font-size:36px">→</span></div></a><a href="Sector-chemical.html" class="row center between sector-row" style="padding:26px 0;border-bottom:1px solid var(--rule);position:relative;transition:background 0.15s;background:transparent;color:var(--fg)"><div class="row center" style="gap:36px;flex:1"><span class="mono" style="font-size:12px;opacity:0.6;width:24px">04</span><span class="headline" style="font-size:64px;line-height:0.9">Chemical</span></div><div class="row center" style="gap:36px"><span class="mono" style="font-size:13px;opacity:0.7;max-width:360px;text-align:right">Storage, reactors, jacketed mixers, ATEX-rated.</span><span class="headline" style="font-size:36px">→</span></div></a><a href="Sector-food.html" class="row center between sector-row" style="padding:26px 0;border-bottom:1px solid var(--rule);position:relative;transition:background 0.15s;background:transparent;color:var(--fg)"><div class="row center" style="gap:36px;flex:1"><span class="mono" style="font-size:12px;opacity:0.6;width:24px">05</span><span class="headline" style="font-size:64px;line-height:0.9">Food</span></div><div class="row center" style="gap:36px"><span class="mono" style="font-size:13px;opacity:0.7;max-width:360px;text-align:right">Mix, cook, hold &amp; CIP-able vessels for sauces, syrups, oils.</span><span class="headline" style="font-size:36px">→</span></div></a><a href="Sector-road.html" class="row center between sector-row" style="padding:26px 0;border-bottom:1px solid var(--rule);position:relative;transition:background 0.15s;background:transparent;color:var(--fg)"><div class="row center" style="gap:36px;flex:1"><span class="mono" style="font-size:12px;opacity:0.6;width:24px">06</span><span class="headline" style="font-size:64px;line-height:0.9">Road Tankers</span></div><div class="row center" style="gap:36px"><span class="mono" style="font-size:13px;opacity:0.7;max-width:360px;text-align:right">Compartmented milk &amp; food-grade road haulage tankers.</span><span class="headline" style="font-size:36px">→</span></div></a><a href="Sector-secondhand.html" class="row center between sector-row" style="padding:26px 0;border-bottom:1px solid var(--rule);position:relative;transition:background 0.15s;background:transparent;color:var(--fg)"><div class="row center" style="gap:36px;flex:1"><span class="mono" style="font-size:12px;opacity:0.6;width:24px">07</span><span class="headline" style="font-size:64px;line-height:0.9">2nd Hand</span></div><div class="row center" style="gap:36px"><span class="mono" style="font-size:13px;opacity:0.7;max-width:360px;text-align:right">Re-sized, re-purposed, re-certified pre-owned vessels.</span><span class="headline" style="font-size:36px">→</span></div></a><a href="Sector-repairs.html" class="row center between sector-row" style="padding:26px 0;border-bottom:1px solid var(--rule);position:relative;transition:background 0.15s;background:transparent;color:var(--fg)"><div class="row center" style="gap:36px;flex:1"><span class="mono" style="font-size:12px;opacity:0.6;width:24px">08</span><span class="headline" style="font-size:64px;line-height:0.9">Repairs</span></div><div class="row center" style="gap:36px"><span class="mono" style="font-size:13px;opacity:0.7;max-width:360px;text-align:right">On-site weld repair, re-polishing &amp; re-certification.</span><span class="headline" style="font-size:36px">→</span></div></a></div></section><section style="background:var(--inv-bg);color:var(--inv-fg);padding:100px 32px;margin-top:80px"><div style="max-width:1680px;margin:0 auto"><div class="row" style="gap:12px;align-items:center;margin-bottom:32px"><span class="mono" style="font-size:11px;padding:4px 8px;background:var(--accent);color:var(--accent-fg)">NEW · 2026</span><span class="mono" style="font-size:11px;opacity:0.6;letter-spacing:0.08em;text-transform:uppercase">Spec your vessel in 90 seconds</span></div><div style="display:grid;grid-template-columns:1.4fr 1fr;gap:80px;align-items:center"><div><h2 class="headline" style="font-size:clamp(64px, 9vw, 160px)">MOCK<br>YOUR TANK<br><span style="color:var(--accent)">BEFORE</span><br>WE BUILD IT.</h2><p style="max-width:520px;font-size:17px;line-height:1.5;margin-top:32px;opacity:0.85">The Diesenvale Configurator lets you draft a vessel or road tanker — capacity, finish, jacket, agitator, fittings, axle plan — and walk away with an indicative price, lead time and a spec sheet our shop floor can quote against.</p><div class="row" style="gap:12px;margin-top:32px;flex-wrap:wrap"><a href="Configurator.html" class="btn btn-primary">Start a new build →</a><a href="Config-tank-1.html" class="btn" style="border-color:var(--inv-fg);color:var(--inv-fg)">Open a demo: 18,000 L silo</a></div></div><div class="col" style="gap:16px"><div class="row" style="gap:12px"><div style="flex:1;border:1px solid rgba(255,255,255,0.2);padding:18px;min-height:140px"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:12px">01</div><div class="headline" style="font-size:22px;margin-bottom:8px">Pick sector</div><div class="mono" style="font-size:11px;opacity:0.6;line-height:1.5">Dairy, brewing, pharma, chemical, food, road.</div></div><div style="flex:1;border:1px solid rgba(255,255,255,0.2);padding:18px;min-height:140px"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:12px">02</div><div class="headline" style="font-size:22px;margin-bottom:8px">Set capacity</div><div class="mono" style="font-size:11px;opacity:0.6;line-height:1.5">Litres, diameter, height, orientation.</div></div></div><div class="row" style="gap:12px"><div style="flex:1;border:1px solid rgba(255,255,255,0.2);padding:18px;min-height:140px"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:12px">03</div><div class="headline" style="font-size:22px;margin-bottom:8px">Add the kit</div><div class="mono" style="font-size:11px;opacity:0.6;line-height:1.5">Jacket, agitator, CIP, manlid, fittings.</div></div><div style="flex:1;border:1px solid rgba(255,255,255,0.2);padding:18px;min-height:140px"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:12px">04</div><div class="headline" style="font-size:22px;margin-bottom:8px">Finish &amp; cert</div><div class="mono" style="font-size:11px;opacity:0.6;line-height:1.5">Polish grade, EN/PED, 3-A, ATEX.</div></div></div><div class="row" style="gap:12px"><div style="flex:1;border:1px solid rgba(255,255,255,0.2);padding:18px;min-height:140px"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:12px">05</div><div class="headline" style="font-size:22px;margin-bottom:8px">Get a quote</div><div class="mono" style="font-size:11px;opacity:0.6;line-height:1.5">Indicative € + lead-time band.</div></div><div style="flex:1;border:1px solid rgba(255,255,255,0.2);padding:18px;min-height:140px"><div class="mono" style="font-size:11px;color:var(--accent);margin-bottom:12px">06</div><div class="headline" style="font-size:22px;margin-bottom:8px">Share link</div><div class="mono" style="font-size:11px;opacity:0.6;line-height:1.5">Send it to your engineer.</div></div></div></div></div></div></section><section class="page" style="padding-top:100px;padding-bottom:40px"><div class="col" style="gap:32px;margin-bottom:40px"><div class="rule"></div><div class="row between" style="gap:40px;align-items:flex-end;flex-wrap:wrap"><div class="col" style="gap:16px"><div class="row" style="gap:12px;align-items:center"><span class="mono" style="font-size:11px;background:var(--fg);color:var(--bg);padding:3px 7px">02</span><span class="eyebrow">How we work</span></div><h2 class="headline" style="font-size:clamp(56px, 7vw, 120px)">SIX&nbsp;STEPS.<br>NO&nbsp;SHORTCUTS.</h2></div><div style="max-width:420px"><p style="font-size:15px;line-height:1.5">Every project follows the same six-stage protocol. We don't sub-out fabrication, we don't ship half-finished, and nothing leaves the workshop without being signed off.</p></div></div></div><div style="display:grid;grid-template-columns:repeat(6, 1fr);gap:0;border:1px solid var(--rule)"><div style="padding:28px;border-right:1px solid var(--rule);min-height:280px;display:flex;flex-direction:column;justify-content:space-between"><div><div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">STEP / 01</div><div class="headline" style="font-size:36px;margin-bottom:14px">Brief</div></div><div class="mono" style="font-size:11px;line-height:1.5;color:var(--muted)">Sit-down or call. We translate ambition into a drawing.</div></div><div style="padding:28px;border-right:1px solid var(--rule);min-height:280px;display:flex;flex-direction:column;justify-content:space-between"><div><div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">STEP / 02</div><div class="headline" style="font-size:36px;margin-bottom:14px">Design</div></div><div class="mono" style="font-size:11px;line-height:1.5;color:var(--muted)">3D model, stress calcs, P&amp;ID review, fittings schedule.</div></div><div style="padding:28px;border-right:1px solid var(--rule);min-height:280px;display:flex;flex-direction:column;justify-content:space-between"><div><div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">STEP / 03</div><div class="headline" style="font-size:36px;margin-bottom:14px">Procure</div></div><div class="mono" style="font-size:11px;line-height:1.5;color:var(--muted)">Plate, fittings, valves &amp; instrumentation — fully traceable.</div></div><div style="padding:28px;border-right:1px solid var(--rule);min-height:280px;display:flex;flex-direction:column;justify-content:space-between"><div><div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">STEP / 04</div><div class="headline" style="font-size:36px;margin-bottom:14px">Fabricate</div></div><div class="mono" style="font-size:11px;line-height:1.5;color:var(--muted)">Rolled, longitudinal &amp; circumferential welds, X-ray inspected.</div></div><div style="padding:28px;border-right:1px solid var(--rule);min-height:280px;display:flex;flex-direction:column;justify-content:space-between"><div><div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">STEP / 05</div><div class="headline" style="font-size:36px;margin-bottom:14px">Finish</div></div><div class="mono" style="font-size:11px;line-height:1.5;color:var(--muted)">Mechanical or electropolish, passivation, branding.</div></div><div style="padding:28px;border-right:none;min-height:280px;display:flex;flex-direction:column;justify-content:space-between"><div><div class="mono" style="font-size:11px;color:var(--muted);margin-bottom:16px">STEP / 06</div><div class="headline" style="font-size:36px;margin-bottom:14px">Install</div></div><div class="mono" style="font-size:11px;line-height:1.5;color:var(--muted)">Crane-lift, pipe-up, CIP commissioning, sign-off.</div></div></div></section><section class="page" style="padding-top:100px;padding-bottom:60px"><div class="col" style="gap:32px;margin-bottom:40px"><div class="rule"></div><div class="row between" style="gap:40px;align-items:flex-end;flex-wrap:wrap"><div class="col" style="gap:16px"><div class="row" style="gap:12px;align-items:center"><span class="mono" style="font-size:11px;background:var(--fg);color:var(--bg);padding:3px 7px">03</span><span class="eyebrow">By the numbers</span></div><h2 class="headline" style="font-size:clamp(56px, 7vw, 120px)">FORTY-THREE&nbsp;YEARS,<br>MEASURED.</h2></div></div></div><div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:32px"><div class="col" style="gap:8px"><div class="headline" style="font-size:140px;line-height:0.82">1,047</div><div class="eyebrow">Projects shipped since 1983</div></div><div class="col" style="gap:8px"><div class="headline" style="font-size:140px;line-height:0.82">430+</div><div class="eyebrow">Clients across 30+ counties</div></div><div class="col" style="gap:8px"><div class="headline" style="font-size:140px;line-height:0.82">250k</div><div class="eyebrow">Litres — largest single vessel</div></div><div class="col" style="gap:8px"><div class="headline" style="font-size:140px;line-height:0.82">43</div><div class="eyebrow">Years building in stainless</div></div></div><div class="rule" style="margin-top:56px;margin-bottom:24px"></div><div class="row between" style="gap:40px;flex-wrap:wrap"><div class="mono" style="font-size:12px;color:var(--muted)">DATA · DIESENVALE INTERNAL · UPDATED 26.05.2026</div><div class="mono" style="font-size:12px">AVG. LEAD TIME (STANDARD VESSEL) — 8–14 WEEKS</div></div></section><section class="page" style="padding-top:100px;padding-bottom:40px"><div class="col" style="gap:32px;margin-bottom:40px"><div class="rule"></div><div class="row between" style="gap:40px;align-items:flex-end;flex-wrap:wrap"><div class="col" style="gap:16px"><div class="row" style="gap:12px;align-items:center"><span class="mono" style="font-size:11px;background:var(--fg);color:var(--bg);padding:3px 7px">04</span><span class="eyebrow">Recently shipped</span></div><h2 class="headline" style="font-size:clamp(56px, 7vw, 120px)">OFF THE FLOOR.</h2></div><div style="max-width:420px"><div class="row between" style="gap:16px;align-items:center"><span class="mono" style="font-size:12px;color:var(--muted)">4 of 1,047</span><a href="Portfolio.html" class="btn btn-ghost">Full archive →</a></div></div></div></div><div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:16px"><div class="col" style="gap:14px"><div class="ph" style="aspect-ratio:4 / 5"><span class="ph-label">#001 / DAIRY</span><span class="ph-meta">6 × 24,000 L · 316L · jacketed</span></div><div class="row between" style="align-items:flex-start;gap:12px"><div><div class="headline" style="font-size:22px;margin-bottom:6px">Glanbia Whey Tank Bank</div><div class="mono" style="font-size:11px;color:var(--muted)">6 × 24,000 L · 316L · jacketed</div></div><span class="mono" style="font-size:11px">→</span></div></div><div class="col" style="gap:14px"><div class="ph" style="aspect-ratio:4 / 5"><span class="ph-label">#002 / BREWING</span><span class="ph-meta">60 BBL · DOM · glycol jacket</span></div><div class="row between" style="align-items:flex-start;gap:12px"><div><div class="headline" style="font-size:22px;margin-bottom:6px">Kinnegar 60 BBL Brite</div><div class="mono" style="font-size:11px;color:var(--muted)">60 BBL · DOM · glycol jacket</div></div><span class="mono" style="font-size:11px">→</span></div></div><div class="col" style="gap:14px"><div class="ph" style="aspect-ratio:4 / 5"><span class="ph-label">#003 / ROAD</span><span class="ph-meta">28,000 L · 3-compartment · CIP</span></div><div class="row between" style="align-items:flex-start;gap:12px"><div><div class="headline" style="font-size:22px;margin-bottom:6px">Lakeland 28k Tri-Axle</div><div class="mono" style="font-size:11px;color:var(--muted)">28,000 L · 3-compartment · CIP</div></div><span class="mono" style="font-size:11px">→</span></div></div><div class="col" style="gap:14px"><div class="ph" style="aspect-ratio:4 / 5"><span class="ph-label">#004 / PHARMA</span><span class="ph-meta">5,000 L · electro-polished · ASME BPE</span></div><div class="row between" style="align-items:flex-start;gap:12px"><div><div class="headline" style="font-size:22px;margin-bottom:6px">Lonza Mixing Vessel</div><div class="mono" style="font-size:11px;color:var(--muted)">5,000 L · electro-polished · ASME BPE</div></div><span class="mono" style="font-size:11px">→</span></div></div></div></section><section style="background:var(--accent);color:var(--accent-fg);padding:100px 32px;margin-top:80px"><div style="max-width:1680px;margin:0 auto"><div class="row between" style="align-items:flex-end;flex-wrap:wrap;gap:40px"><h2 class="headline" style="font-size:clamp(64px, 10vw, 180px)">GOT A<br>VESSEL<br>IN MIND?</h2><div class="col" style="gap:18px;max-width:420px"><p style="font-size:17px;line-height:1.4">Configure it yourself, or pick up the phone. Either way, you'll be talking to the people who'll actually build it.</p><div class="row" style="gap:12px;flex-wrap:wrap"><a href="Configurator.html" class="btn btn-inv">Configure →</a><a href="Contact.html" class="btn btn-ghost" style="border-color:var(--accent-fg)">+353 63 89795</a></div></div></div></div></section></div><footer class="footer"><div class="footer-inner"><div class="footer-title">FABRICATED<br>IN CHARLEVILLE.<br>SHIPPED WORLDWIDE.</div><div class="row between" style="margin-top:60px;align-items:flex-start;gap:40px;flex-wrap:wrap"><div style="max-width:360px"><h4>The Workshop</h4><div class="mono" style="font-size:13px;line-height:1.6;opacity:0.85">Kilmallock Road<br>Charleville<br>Co. Cork, Ireland<br><br>+353 63 89795<br>+353 87 7740546<br>brian@diesenvale.ie</div></div><div><h4>Capability</h4><ul class="mono"><li><a href="Sector-dairy.html">Dairy</a></li><li><a href="Sector-brewing.html">Brewing</a></li><li><a href="Sector-pharma.html">Pharmaceutical</a></li><li><a href="Sector-chemical.html">Chemical</a></li><li><a href="Sector-food.html">Food</a></li><li><a href="Sector-road.html">Road Tankers</a></li></ul></div><div><h4>Services</h4><ul class="mono"><li>Custom fabrication</li><li>2nd-hand modifications</li><li>On-site repairs</li><li>CIP integration</li><li>Cladding &amp; jacketing</li><li>Installation</li></ul></div><div><h4>Standards</h4><ul class="mono"><li>EN 13445 / PED</li><li>3-A Sanitary</li><li>ASME BPE</li><li>EHEDG</li><li>ATEX certified</li><li>ISO 9001:2015</li></ul></div></div><div class="footer-bottom"><span>© 1983–2026 Diesenvale Engineering Ltd · Co. Reg. 092847</span><span>v.04 / brutalist redux</span></div></div></footer></div>
+
+<div style="position:absolute;top:790px;left:24px;z-index:40;pointer-events:none"><div style="width:88px;height:88px;border-radius:50%;border:2px solid var(--fg);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:9px;text-align:center;line-height:1.2;color:var(--fg);transform:rotate(-6deg);opacity:0.92"><div style="font-weight:700;font-size:11px">DV</div><div style="font-size:8px;margin-top:2px">BUILT</div><div style="font-size:8px">IN IRELAND</div><div style="border-top:1px solid var(--rule);margin-top:4px;padding-top:2px;font-size:7px">EST. 1983</div></div></div>
+
+</div>
+
+</body>
+</html>

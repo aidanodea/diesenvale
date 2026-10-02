@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8">
+<title>Diesenvale Configurator tank 5</title>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700;800&amp;family=Archivo:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* ========== Diesenvale — brutalist industrial ========== */
+
+:root {
+  /* Default palette: Bone / Ink / Signal Yellow */
+  --bg: #EFEAE0;
+  --fg: #0A0A0A;
+  --muted: #6E6A60;
+  --rule: #0A0A0A;
+  --accent: #FFD400;
+  --accent-fg: #0A0A0A;
+  --panel: #E5DFD2;
+  --inv-bg: #0A0A0A;
+  --inv-fg: #EFEAE0;
+}
+
+[data-palette="caution"] {
+  --bg: #E8E5DD;
+  --fg: #0F0F0F;
+  --muted: #6A675F;
+  --rule: #0F0F0F;
+  --accent: #FF4D00;
+  --accent-fg: #FFFFFF;
+  --panel: #DCD8CE;
+  --inv-bg: #0F0F0F;
+  --inv-fg: #E8E5DD;
+}
+
+[data-palette="acid"] {
+  --bg: #131313;
+  --fg: #ECE9E0;
+  --muted: #8C8A82;
+  --rule: #ECE9E0;
+  --accent: #C8FF00;
+  --accent-fg: #0A0A0A;
+  --panel: #1C1C1C;
+  --inv-bg: #ECE9E0;
+  --inv-fg: #0A0A0A;
+}
+
+[data-palette="steel"] {
+  --bg: #DDE2E5;
+  --fg: #0E1922;
+  --muted: #5A6670;
+  --rule: #0E1922;
+  --accent: #0047FF;
+  --accent-fg: #FFFFFF;
+  --panel: #CDD4D9;
+  --inv-bg: #0E1922;
+  --inv-fg: #DDE2E5;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body { min-height: 100vh; }
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+input, select, textarea { font: inherit; color: inherit; background: transparent; border: none; outline: none; }
+
+/* ---------- type ---------- */
+
+.headline {
+  font-family: "Archivo Narrow", "Archivo", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+.mono {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ---------- structure ---------- */
+
+.page { max-width: 1680px; margin: 0 auto; padding: 0 32px; }
+.rule { background: var(--rule); height: 1px; width: 100%; }
+.rule-thick { background: var(--rule); height: 6px; width: 100%; }
+
+.row { display: flex; }
+.col { display: flex; flex-direction: column; }
+.between { justify-content: space-between; }
+.center { align-items: center; }
+
+/* ---------- nav ---------- */
+
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 14px 32px;
+  gap: 24px;
+}
+.nav-logo {
+  font-family: "Archivo Narrow", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo .dot { width: 10px; height: 10px; background: var(--accent); display: inline-block; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 6px 2px;
+  border-bottom: 2px solid transparent;
+}
+.nav-links a:hover { border-bottom-color: var(--accent); }
+.nav-links a.active { border-bottom-color: var(--fg); }
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+.nav-cta {
+  background: var(--accent);
+  color: var(--accent-fg);
+  padding: 8px 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.nav-cta:hover { background: var(--fg); color: var(--bg); }
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 22px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  border: 1px solid var(--fg);
+  transition: 0.12s ease;
+}
+.btn-primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.btn-primary:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn-ghost { background: transparent; color: var(--fg); }
+.btn-ghost:hover { background: var(--fg); color: var(--bg); }
+.btn-inv { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn-inv:hover { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+
+.btn .arr { font-size: 16px; line-height: 1; }
+
+/* ---------- placeholder image ---------- */
+
+.ph {
+  position: relative;
+  background: var(--panel);
+  overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 12px;
+  color: var(--fg);
+  border: 1px solid var(--rule);
+}
+.ph::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 14px,
+    rgba(10,10,10,0.06) 14px 15px
+  );
+}
+[data-palette="acid"] .ph::before {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0 14px,
+    rgba(236,233,224,0.08) 14px 15px
+  );
+}
+.ph-label {
+  position: relative;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--bg);
+  padding: 4px 8px;
+  border: 1px solid var(--rule);
+}
+.ph-meta {
+  position: relative;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* ---------- ticker / marquee ---------- */
+
+.ticker {
+  background: var(--fg);
+  color: var(--bg);
+  overflow: hidden;
+  border-top: 1px solid var(--fg);
+  border-bottom: 1px solid var(--fg);
+}
+.ticker-track {
+  display: flex;
+  gap: 64px;
+  white-space: nowrap;
+  padding: 14px 0;
+  animation: tick 40s linear infinite;
+  font-family: "Archivo Narrow", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.ticker-track span { display: inline-flex; align-items: center; gap: 24px; }
+.ticker-track span::after {
+  content: "■";
+  color: var(--accent);
+  font-size: 14px;
+}
+@keyframes tick {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- footer ---------- */
+
+.footer { background: var(--inv-bg); color: var(--inv-fg); margin-top: 80px; }
+.footer-inner { padding: 60px 32px 28px; max-width: 1680px; margin: 0 auto; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; }
+.footer-title {
+  font-family: "Archivo Narrow", sans-serif;
+  font-size: 64px;
+  text-transform: uppercase;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+}
+.footer h4 {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+[data-palette="acid"] .footer h4 { color: rgba(10,10,10,0.55); }
+.footer ul { list-style: none; }
+.footer ul li { padding: 6px 0; font-size: 14px; }
+.footer ul li a:hover { color: var(--accent); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  margin-top: 48px;
+  padding-top: 20px;
+  display: flex; justify-content: space-between;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.6);
+}
+[data-palette="acid"] .footer-bottom { border-top-color: rgba(10,10,10,0.2); color: rgba(10,10,10,0.6); }
+
+/* ---------- spec table ---------- */
+
+.spec {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  width: 100%;
+  border-collapse: collapse;
+}
+.spec td { padding: 9px 0; border-bottom: 1px dashed var(--rule); vertical-align: top; }
+.spec td:first-child { color: var(--muted); width: 45%; padding-right: 12px; }
+.spec td:last-child { text-align: right; font-weight: 600; }
+
+/* ---------- tags / chips ---------- */
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--rule);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: transparent;
+  cursor: pointer;
+  transition: 0.12s;
+}
+.chip:hover { background: var(--fg); color: var(--bg); }
+.chip.active { background: var(--fg); color: var(--bg); }
+.chip.accent { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+
+/* ---------- card ---------- */
+
+.card {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  padding: 24px;
+}
+
+/* ---------- field ---------- */
+
+.field {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--rule);
+  padding: 14px 16px;
+  background: var(--bg);
+}
+.field label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.field input, .field textarea, .field select {
+  font-size: 15px;
+  background: transparent;
+  width: 100%;
+}
+
+/* ---------- focus ---------- */
+
+::selection { background: var(--accent); color: var(--accent-fg); }
+
+a.sector-row:hover{background:var(--fg)!important;color:var(--bg)!important;padding:26px 24px!important}
+.pc:hover{background:var(--fg)!important;color:var(--bg)!important}
+a.sp:hover{background:var(--fg)!important;color:var(--bg)!important}
+
+</style>
+
+</head>
+<body>
+
+
+<div data-palette="bone" style="position:relative;background:var(--bg);color:var(--fg);font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;line-height:1.4">
+<div><nav class="nav"><div class="nav-inner"><div class="row center" style="gap:32px"><a href="index.html" class="nav-logo"><span class="dot"></span>DIESENVALE<span class="mono" style="font-size:11px;color:var(--muted);font-weight:400;margin-left:4px">EST. 1983</span></a></div><div class="nav-links"><a href="index.html" class="">Home</a><a href="Configurator.html" class="active">Configurator</a><a href="Portfolio.html" class="">Portfolio</a><a href="About.html" class="">About</a><a href="Contact.html" class="">Contact</a></div><div class="nav-right"><span class="mono">CHARLEVILLE · CO. CORK · IE</span><a href="Configurator.html" class="nav-cta">Start Build →</a></div></div></nav><div><div style="border-bottom:1px solid var(--rule);padding:20px 32px;background:var(--bg)"><div class="row between" style="align-items:center;gap:20px;flex-wrap:wrap"><div class="row" style="gap:18px;align-items:center"><span class="mono" style="font-size:11px;padding:4px 8px;background:var(--fg);color:var(--bg)">FILE 01 · CONFIGURATOR</span><span class="eyebrow">Dairy build</span></div><div class="row" style="gap:18px;align-items:center;flex-wrap:wrap"><div class="row center" style="gap:8px;opacity:0.45"><span class="mono" style="font-size:10px;padding:2px 6px;background:transparent;color:var(--fg);border:1px solid var(--rule)">00</span><span class="mono" style="font-size:11px;text-transform:uppercase">Sector</span></div><div class="row center" style="gap:8px;opacity:0.45"><span class="mono" style="font-size:10px;padding:2px 6px;background:transparent;color:var(--fg);border:1px solid var(--rule)">01</span><span class="mono" style="font-size:11px;text-transform:uppercase">Form</span></div><div class="row center" style="gap:8px;opacity:0.45"><span class="mono" style="font-size:10px;padding:2px 6px;background:transparent;color:var(--fg);border:1px solid var(--rule)">02</span><span class="mono" style="font-size:11px;text-transform:uppercase">Capacity</span></div><div class="row center" style="gap:8px;opacity:0.45"><span class="mono" style="font-size:10px;padding:2px 6px;background:transparent;color:var(--fg);border:1px solid var(--rule)">03</span><span class="mono" style="font-size:11px;text-transform:uppercase">Material</span></div><div class="row center" style="gap:8px;opacity:0.45"><span class="mono" style="font-size:10px;padding:2px 6px;background:transparent;color:var(--fg);border:1px solid var(--rule)">04</span><span class="mono" style="font-size:11px;text-transform:uppercase">Jacket &amp; Agitator</span></div><div class="row center" style="gap:8px;opacity:1"><span class="mono" style="font-size:10px;padding:2px 6px;background:var(--accent);color:var(--accent-fg);border:1px solid var(--rule)">05</span><span class="mono" style="font-size:11px;text-transform:uppercase">Fittings</span></div><div class="row center" style="gap:8px;opacity:0.45"><span class="mono" style="font-size:10px;padding:2px 6px;background:transparent;color:var(--fg);border:1px solid var(--rule)">06</span><span class="mono" style="font-size:11px;text-transform:uppercase">Certification</span></div><div class="row center" style="gap:8px;opacity:0.45"><span class="mono" style="font-size:10px;padding:2px 6px;background:transparent;color:var(--fg);border:1px solid var(--rule)">07</span><span class="mono" style="font-size:11px;text-transform:uppercase">Summary</span></div></div></div></div><div style="display:grid;grid-template-columns:1.05fr 1fr;gap:0;border-top:1px solid var(--rule)"><div style="border-right:1px solid var(--rule);padding:32px;background:var(--panel);display:flex;flex-direction:column;gap:24px;min-height:700px"><div class="row between" style="align-items:flex-end"><div><div class="eyebrow">Live preview</div><div class="headline" style="font-size:32px;margin-top:8px">VESSEL / DAIRY</div></div><div class="mono" style="font-size:11px;color:var(--muted);text-align:right">REV. A / 2/10/2026</div></div><div style="flex:1;position:relative;border:1px dashed var(--rule);padding:32px;display:flex;align-items:center;justify-content:center;min-height:420px"><div style="position:absolute;inset:0;background-image:linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px);background-size:32px 32px;opacity:0.06"></div><div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:4px"><div class="ph" style="width:220px;height:440px;border-radius:50% 50% 0 0 / 18% 18% 0 0;border-top-left-radius:50% 50px;border-top-right-radius:50% 50px;border-bottom-left-radius:50% 50px;border-bottom-right-radius:50% 50px;outline:8px double var(--rule);outline-offset:4px"><span class="ph-label">316L 2B</span><span class="ph-meta">18,000 L · VERT</span></div><div class="mono" style="position:absolute;top:-28px;left:50%;transform:translateX(-50%);font-size:10px;background:var(--accent);color:var(--accent-fg);padding:2px 6px">↻ TOP AGITATOR</div><div class="mono" style="position:absolute;top:16px;right:-90px;font-size:10px;background:var(--fg);color:var(--bg);padding:2px 6px">CIP-ABLE</div></div></div><div style="border-top:1px solid var(--rule);padding-top:20px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px"><div><div class="mono" style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em">Volume</div><div class="mono" style="font-size:14px;font-weight:600;margin-top:4px">18,000 L</div></div><div><div class="mono" style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em">Material</div><div class="mono" style="font-size:14px;font-weight:600;margin-top:4px">316L</div></div><div><div class="mono" style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em">Finish</div><div class="mono" style="font-size:14px;font-weight:600;margin-top:4px">2B mill</div></div><div><div class="mono" style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em">Cert</div><div class="mono" style="font-size:14px;font-weight:600;margin-top:4px">EN13445</div></div></div></div><div style="padding:32px;display:flex;flex-direction:column;gap:24px"><div><div class="mono" style="font-size:11px;color:var(--muted)">STEP 05 / 07</div><div class="headline" style="font-size:48px;margin-top:6px">FITTINGS</div></div><div style="flex:1;min-height:380px"><div class="col" style="gap:24px"><div class="col" style="gap:10px"><div class="mono" style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em">Manway / manlid</div><div class="row" style="flex-wrap:wrap;gap:8px"><button class="chip">Top</button><button class="chip accent">Side</button><button class="chip">None</button></div></div><div class="col" style="gap:10px"><div class="mono" style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em">Valves</div><div class="row" style="flex-wrap:wrap;gap:8px"><button class="chip accent">Manual</button><button class="chip">Pneumatic actuated</button></div></div><div class="col" style="gap:10px"><div class="mono" style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em">Instrumentation</div><div class="row" style="flex-wrap:wrap;gap:8px"><button class="chip accent">Basic (level, temp)</button><button class="chip">Full (level, temp, pressure, conductivity)</button></div></div><div class="col" style="gap:10px"><div class="mono" style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em">CIP</div><button class="chip accent">✓ CIP-able</button></div></div></div><div class="row between" style="padding-top:20px;border-top:1px solid var(--rule)"><a href="Config-tank-4.html" class="btn btn-ghost">← Back</a><div class="mono" style="font-size:11px;color:var(--muted)">INDICATIVE: €36,500 — €50,500 · 12–16 WKS</div><a href="Config-tank-6.html" class="btn btn-primary">Next →</a></div></div></div></div><footer class="footer"><div class="footer-inner"><div class="footer-title">FABRICATED<br/>IN CHARLEVILLE.<br/>SHIPPED WORLDWIDE.</div><div class="row between" style="margin-top:60px;align-items:flex-start;gap:40px;flex-wrap:wrap"><div style="max-width:360px"><h4>The Workshop</h4><div class="mono" style="font-size:13px;line-height:1.6;opacity:0.85">Kilmallock Road<br/>Charleville<br/>Co. Cork, Ireland<br/><br/>+353 63 89795<br/>+353 87 7740546<br/>brian@diesenvale.ie</div></div><div><h4>Capability</h4><ul class="mono"><li><a href="Sector-dairy.html">Dairy</a></li><li><a href="Sector-brewing.html">Brewing</a></li><li><a href="Sector-pharma.html">Pharmaceutical</a></li><li><a href="Sector-chemical.html">Chemical</a></li><li><a href="Sector-food.html">Food</a></li><li><a href="Sector-road.html">Road Tankers</a></li></ul></div><div><h4>Services</h4><ul class="mono"><li>Custom fabrication</li><li>2nd-hand modifications</li><li>On-site repairs</li><li>CIP integration</li><li>Cladding &amp; jacketing</li><li>Installation</li></ul></div><div><h4>Standards</h4><ul class="mono"><li>EN 13445 / PED</li><li>3-A Sanitary</li><li>ASME BPE</li><li>EHEDG</li><li>ATEX certified</li><li>ISO 9001:2015</li></ul></div></div><div class="footer-bottom"><span>© 1983–2026 Diesenvale Engineering Ltd · Co. Reg. 092847</span><span>v.04 / brutalist redux</span></div></div></footer></div>
+
+<div style="position:absolute;top:790px;left:24px;z-index:40;pointer-events:none"><div style="width:88px;height:88px;border-radius:50%;border:2px solid var(--fg);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:9px;text-align:center;line-height:1.2;color:var(--fg);transform:rotate(-6deg);opacity:0.92"><div style="font-weight:700;font-size:11px">DV</div><div style="font-size:8px;margin-top:2px">BUILT</div><div style="font-size:8px">IN IRELAND</div><div style="border-top:1px solid var(--rule);margin-top:4px;padding-top:2px;font-size:7px">EST. 1983</div></div></div>
+
+</div>
+
+</body>
+</html>
