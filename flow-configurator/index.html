@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=1440">
+<meta charset="utf-8">
+<title>Flow Space Configurator</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+body{margin:0}
+sc-for,sc-if{display:contents}
+button{font:inherit;cursor:pointer;color:inherit}
+button:hover{filter:brightness(.96)}
+button:focus-visible{outline:2px solid #1B1D1F;outline-offset:2px}
+input{font:inherit}
+</style>
+</helmet>
+<div style="width:1440px;height:900px;box-sizing:border-box;display:flex;flex-direction:column;background:#E9E7E0;color:#1B1D1F;font-family:'IBM Plex Sans',system-ui,sans-serif;overflow:hidden">
+
+  <header style="height:60px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:#1B1D1F;color:#F4F2EC">
+    <div style="display:flex;align-items:baseline;gap:16px">
+      <h1 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;letter-spacing:.03em;text-transform:uppercase">Flow Space</h1>
+      <span style="font-size:13px;color:#CFCCC2">Rathgoggan Middle, Co. Cork &middot; 9 &times; 20 m shell &middot; every internal wall is movable &middot; doors are 750 mm</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:#CFCCC2">
+      <span>Layout</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18px;letter-spacing:.04em;text-transform:uppercase;color:#F4F2EC">{{layoutName}}</span>
+    </div>
+  </header>
+
+  <div style="flex:1;min-height:0;display:flex">
+
+    <aside style="width:272px;flex:none;box-sizing:border-box;padding:18px 20px;display:flex;flex-direction:column;gap:18px;background:#F7F6F1;border-right:1px solid #CFCBBF;overflow-y:auto">
+      <section style="display:flex;flex-direction:column;gap:8px">
+        <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#5B5E62">Layout</h2>
+        <sc-for list="{{layouts}}" as="l" hint-placeholder-count="3">
+          <button type="button" onClick="{{l.pick}}" style="text-align:left;display:flex;flex-direction:column;gap:3px;padding:9px 12px;border-radius:6px;{{l.css}}">
+            <span style="font-weight:600;font-size:14px">{{l.name}}</span>
+            <span style="font-size:12px;line-height:1.4;{{l.sub}}">{{l.desc}}</span>
+          </button>
+        </sc-for>
+        <button type="button" onClick="{{resetLayout}}" style="align-self:flex-start;padding:6px 10px;font-size:12px;border-radius:6px;border:1px solid #BDB9AD;background:transparent">Reset to this layout</button>
+      </section>
+
+      <section style="display:flex;flex-direction:column;gap:8px">
+        <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#5B5E62">Floor area by use</h2>
+        <sc-for list="{{usage}}" as="u" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:center;font-size:13px">
+            <span style="width:12px;height:12px;border-radius:2px;background:{{u.color}}"></span>
+            <div>
+              <div>{{u.name}}</div>
+              <div style="height:4px;margin-top:3px;background:#E2DFD6"><div style="height:4px;width:{{u.pct}}%;background:{{u.color}}"></div></div>
+            </div>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{{u.area}} m&sup2;</span>
+          </div>
+        </sc-for>
+      </section>
+
+      <section style="display:flex;flex-direction:column;gap:8px">
+        <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#5B5E62">Flow walls placed</h2>
+        <sc-for list="{{flowRows}}" as="f" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:center;font-size:13px;{{f.css}}">
+            <span style="width:12px;height:12px;border-radius:2px;background:{{f.color}}"></span>
+            <span>{{f.name}}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{{f.len}}</span>
+          </div>
+        </sc-for>
+      </section>
+    </aside>
+
+    <main style="flex:1;min-width:0;position:relative;background:#E9E7E0;background-image:radial-gradient(rgba(27,29,31,.13) 1px,transparent 1px);background-size:24px 24px">
+
+      <div style="position:absolute;left:0;right:0;top:0;bottom:0;overflow:hidden;display:{{modelDisplay}}">
+        <div style="position:absolute;left:50%;top:50%;width:288px;height:640px;margin-left:-144px;margin-top:-290px;transform-style:preserve-3d;{{worldCss}}">
+
+          <div style="position:absolute;left:0px;top:0px;width:288px;height:640px;background-color:#F3F1EA;background-image:linear-gradient(rgba(27,29,31,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(27,29,31,.06) 1px,transparent 1px);background-size:32px 32px;box-shadow:0 0 0 7px #CFCBBF,0 0 40px 10px rgba(27,29,31,.18)"></div>
+
+          <sc-for list="{{zones3d}}" as="z" hint-placeholder-count="12">
+            <div onClick="{{z.pick}}" style="position:absolute;cursor:pointer;box-sizing:border-box;transform:translateZ(1px);display:flex;align-items:center;justify-content:center;text-align:center;{{z.css}}">
+              <span style="pointer-events:none;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#1B1D1F">{{z.label}}</span>
+            </div>
+          </sc-for>
+
+          <sc-for list="{{doors3d}}" as="d" hint-placeholder-count="10">
+            <div style="position:absolute;pointer-events:none;transform:translateZ(2px);background:#1B1D1F;{{d.css}}"></div>
+          </sc-for>
+
+          <sc-for list="{{fsh}}" as="f" hint-placeholder-count="0">
+            <div style="position:absolute;pointer-events:none;box-sizing:border-box;{{f.css}}"></div>
+          </sc-for>
+          <sc-for list="{{fsegs}}" as="f" hint-placeholder-count="0">
+            <div style="position:absolute;left:0px;top:0px;width:0px;height:0px;pointer-events:none;transform-style:preserve-3d;{{f.wrap}}">
+              <div style="position:absolute;pointer-events:none;box-sizing:border-box;{{f.face}}"></div>
+            </div>
+          </sc-for>
+          <sc-for list="{{ftops}}" as="f" hint-placeholder-count="0">
+            <div style="position:absolute;pointer-events:none;box-sizing:border-box;{{f.css}}"></div>
+          </sc-for>
+
+          <sc-for list="{{walls3d}}" as="w" hint-placeholder-count="48">
+            <div style="position:absolute;left:0px;top:0px;width:0px;height:0px;transform-style:preserve-3d;{{w.wrap}}">
+              <div onClick="{{w.pick}}" style="position:absolute;cursor:pointer;{{w.ghost}}"></div>
+              <div onClick="{{w.pick}}" style="position:absolute;cursor:pointer;{{w.front}}">
+                <div style="position:absolute;{{w.pane}}"></div>
+              </div>
+              <div onClick="{{w.pick}}" style="position:absolute;cursor:pointer;{{w.back}}">
+                <div style="position:absolute;{{w.pane}}"></div>
+              </div>
+              <div onClick="{{w.pick}}" style="position:absolute;cursor:pointer;{{w.panelF}}">
+                <div style="position:absolute;left:0;right:0;top:0;height:24%;display:flex;align-items:center;justify-content:center;padding:0 3px;box-sizing:border-box;color:#fff;white-space:nowrap;overflow:hidden;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:{{w.fs}}px">{{w.label}}</div>
+              </div>
+              <div onClick="{{w.pick}}" style="position:absolute;cursor:pointer;{{w.panelB}}">
+                <div style="position:absolute;left:0;right:0;top:0;height:24%;display:flex;align-items:center;justify-content:center;padding:0 3px;box-sizing:border-box;color:#fff;white-space:nowrap;overflow:hidden;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:{{w.fs}}px">{{w.label}}</div>
+              </div>
+              <div onClick="{{w.pick}}" style="position:absolute;cursor:pointer;{{w.cap}}"></div>
+            </div>
+          </sc-for>
+
+        </div>
+      </div>
+
+      <div onPointerDown="{{rotDown}}" onPointerMove="{{rotMove}}" onPointerUp="{{rotUp}}" onPointerLeave="{{rotUp}}" style="position:absolute;left:0;right:0;top:0;bottom:0;touch-action:none;{{rotCss}}"></div>
+
+      <div style="position:absolute;left:0;right:0;top:0;bottom:0;display:{{editDisplay}}">
+        <div onPointerDown="{{editDown}}" onPointerMove="{{editMove}}" onPointerUp="{{editUp}}" onPointerLeave="{{editUp}}" style="position:absolute;left:50%;top:50%;width:288px;height:640px;margin-left:-144px;margin-top:-280px;background-color:#F3F1EA;background-image:linear-gradient(rgba(27,29,31,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(27,29,31,.08) 1px,transparent 1px);background-size:32px 32px;box-shadow:0 0 0 1px #8F8B7E;touch-action:none;user-select:none;cursor:{{editCursor}}">
+          <sc-for list="{{editZones}}" as="z" hint-placeholder-count="12">
+            <div onPointerDown="{{z.down}}" style="position:absolute;box-sizing:border-box;display:flex;align-items:center;justify-content:center;text-align:center;{{z.css}}">
+              <span style="pointer-events:none;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#1B1D1F">{{z.label}}</span>
+            </div>
+          </sc-for>
+          <sc-for list="{{editDoors}}" as="d" hint-placeholder-count="10">
+            <div style="position:absolute;pointer-events:none;background:#6B6F75;{{d.css}}"></div>
+          </sc-for>
+          <sc-for list="{{editWalls}}" as="w" hint-placeholder-count="48">
+            <div onPointerDown="{{w.down}}" style="position:absolute;{{w.hit}}">
+              <div style="position:absolute;pointer-events:none;{{w.line}}"></div>
+            </div>
+          </sc-for>
+          <sc-for list="{{editDims}}" as="d" hint-placeholder-count="1">
+            <div style="position:absolute;pointer-events:none;padding:1px 5px;border-radius:3px;background:#1B1D1F;color:#F4F2EC;font-family:'IBM Plex Mono',monospace;font-size:11px;white-space:nowrap;{{d.css}}">{{d.text}}</div>
+          </sc-for>
+          <span style="position:absolute;left:0;right:0;top:-22px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5B5E62;pointer-events:none">9.0 m</span>
+          <span style="position:absolute;left:-52px;top:310px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5B5E62;pointer-events:none">20.0 m</span>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:16px;right:16px;top:16px;display:flex;flex-direction:column;gap:6px;pointer-events:none">
+        <div style="display:flex;gap:6px;pointer-events:auto;flex-wrap:wrap;align-items:center">
+          <sc-for list="{{row1}}" as="b" hint-placeholder-count="9">
+            <button type="button" aria-label="{{b.aria}}" onClick="{{b.pick}}" style="height:34px;min-width:40px;padding:0 14px;border-radius:6px;font-size:13px;font-weight:500;{{b.css}}">{{b.label}}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:6px;pointer-events:auto;flex-wrap:wrap">
+          <sc-for list="{{row2}}" as="b" hint-placeholder-count="3">
+            <button type="button" aria-label="{{b.aria}}" onClick="{{b.pick}}" style="height:34px;padding:0 14px;border-radius:6px;font-size:13px;font-weight:500;{{b.css}}">{{b.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:20px;bottom:16px;right:20px;font-size:12px;line-height:1.45;color:#4A4D51;pointer-events:none">{{hint}}</div>
+    </main>
+
+    <aside style="width:316px;flex:none;box-sizing:border-box;padding:18px 20px;display:flex;flex-direction:column;gap:16px;background:#F7F6F1;border-left:1px solid #CFCBBF;overflow:hidden">
+      <section style="display:{{miniDisplay}};flex-direction:column;gap:8px;flex:none">
+        <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#5B5E62">Plan</h2>
+        <div style="display:flex;gap:16px;align-items:flex-start">
+          <div onPointerMove="{{planMove}}" onPointerUp="{{planUp}}" onPointerLeave="{{planUp}}" style="position:relative;flex:none;width:153px;height:340px;background:#F3F1EA;box-shadow:0 0 0 1px #BDB9AD;touch-action:none;user-select:none">
+            <sc-for list="{{planZones}}" as="z" hint-placeholder-count="12">
+              <div onPointerDown="{{z.down}}" style="position:absolute;cursor:move;box-sizing:border-box;display:flex;align-items:center;justify-content:center;text-align:center;{{z.css}}">
+                <span style="pointer-events:none;font-size:10px;line-height:1.1;color:#1B1D1F">{{z.label}}</span>
+              </div>
+            </sc-for>
+            <sc-for list="{{planDoors}}" as="d" hint-placeholder-count="10">
+              <div style="position:absolute;pointer-events:none;background:#6B6F75;{{d.css}}"></div>
+            </sc-for>
+            <sc-for list="{{planWalls}}" as="w" hint-placeholder-count="48">
+              <div onPointerDown="{{w.down}}" style="position:absolute;cursor:pointer;{{w.hit}}">
+                <div style="position:absolute;pointer-events:none;{{w.line}}"></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:9px;font-size:12px;color:#3D4044;padding-top:2px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:3px;background:#1B1D1F"></span>Solid</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:3px;background:#5BA3C9"></span>Glass</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:3px;background:#1B1D1F;box-shadow:0 0 0 2px #B02A5B"></span>Flow panel</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:0;border-top:2px dashed #7C7A70"></span>Open</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:3px;background:#9CC9E0"></span>Window</div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="width:20px;height:3px;background:#6B6F75"></span>Door</div>
+            <div style="margin-top:4px;line-height:1.4;color:#5B5E62">Use Edit plan for drawing and erasing walls.</div>
+          </div>
+        </div>
+      </section>
+
+      <section style="display:flex;flex-direction:column;gap:10px;flex:1;min-height:0;overflow-y:auto">
+        <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#5B5E62">Selected</h2>
+        <div style="font-size:13px;line-height:1.5;color:#4A4D51;display:{{insp.emptyDisplay}}">Pick a wall or a room. In Edit plan you can also draw new walls and erase walls.</div>
+
+        <div style="display:{{insp.wallDisplay}};flex-direction:column;gap:10px">
+          <div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px;letter-spacing:.02em">{{insp.title}}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#4A4D51">{{insp.meta}}</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{insp.stateBtns}}" as="b" hint-placeholder-count="4">
+              <button type="button" onClick="{{b.pick}}" style="height:32px;padding:0 12px;border-radius:6px;font-size:13px;font-weight:500;{{b.css}}">{{b.label}}</button>
+            </sc-for>
+          </div>
+          <div style="display:{{insp.wsDisplay}};flex-wrap:wrap;gap:6px">
+            <sc-for list="{{insp.wsBtns}}" as="b" hint-placeholder-count="5">
+              <button type="button" onClick="{{b.pick}}" style="height:32px;padding:0 10px;border-radius:6px;font-size:12px;font-weight:500;{{b.css}}">{{b.label}}</button>
+            </sc-for>
+          </div>
+          <div style="display:{{insp.wallToolsDisplay}};flex-wrap:wrap;gap:6px">
+            <sc-for list="{{insp.wallTools}}" as="b" hint-placeholder-count="4">
+              <button type="button" onClick="{{b.pick}}" style="height:32px;padding:0 10px;border-radius:6px;font-size:12px;font-weight:500;{{b.css}}">{{b.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:{{insp.zoneDisplay}};flex-direction:column;gap:10px">
+          <input type="text" aria-label="Room name" value="{{insp.zlabel}}" onInput="{{insp.onLabel}}" style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:22px;letter-spacing:.02em;padding:2px 6px;border:1px solid #BDB9AD;border-radius:4px;background:#FBFAF6;color:#1B1D1F;width:100%;box-sizing:border-box">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#4A4D51">{{insp.zmeta}}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{insp.typeBtns}}" as="b" hint-placeholder-count="8">
+              <button type="button" onClick="{{b.pick}}" style="height:32px;padding:0 10px;border-radius:6px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;{{b.css}}"><span style="width:10px;height:10px;border-radius:2px;background:{{b.color}}"></span>{{b.label}}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            <sc-for list="{{insp.zoneTools}}" as="b" hint-placeholder-count="5">
+              <button type="button" onClick="{{b.pick}}" style="height:32px;padding:0 10px;border-radius:6px;font-size:12px;font-weight:500;{{b.css}}">{{b.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:{{insp.moveDisplay}};flex-direction:column;gap:6px">
+          <div style="font-size:12px;color:#4A4D51">Move in steps of 0.25 m</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+            <sc-for list="{{insp.arrows}}" as="b" hint-placeholder-count="4">
+              <button type="button" aria-label="{{b.aria}}" onClick="{{b.pick}}" style="height:32px;width:34px;border-radius:6px;font-size:15px;font-weight:500;{{b.css}}">{{b.label}}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:{{insp.clearDisplay}}">
+          <button type="button" onClick="{{clearSel}}" style="padding:6px 10px;font-size:12px;border-radius:6px;border:1px solid #BDB9AD;background:transparent">Deselect</button>
+        </div>
+
+        <div style="margin-top:auto;padding-top:10px;border-top:1px solid #D8D4C8;display:flex;gap:6px">
+          <button type="button" onClick="{{addWall}}" style="height:34px;padding:0 14px;border-radius:6px;font-size:13px;font-weight:500;background:#1B1D1F;color:#F4F2EC;border:1px solid #1B1D1F">Add wall</button>
+          <button type="button" onClick="{{addRoom}}" style="height:34px;padding:0 14px;border-radius:6px;font-size:13px;font-weight:500;background:#FBFAF6;color:#1B1D1F;border:1px solid #BDB9AD">Add room</button>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+const S = 32, PS = 17, EPS = 32, ACC = '#F5A400', INK = '#1B1D1F', BW = 9, BD = 20;
+
+const ZT = {
+  focus:   { n: 'Lockdown focus', c: '#3556B5' },
+  client:  { n: 'Client',         c: '#C4581C' },
+  welcome: { n: 'Welcome',        c: '#D28A2E' },
+  collab:  { n: 'Collaborate',    c: '#2C8A68' },
+  flow:    { n: 'Flow room',      c: '#8E3FA8' },
+  service: { n: 'Service',        c: '#7C8087' },
+  circ:    { n: 'Circulation',    c: '#B9B5A8' },
+  none:    { n: 'Unassigned',     c: '#A09A8A' }
+};
+const ZORDER = ['focus', 'client', 'welcome', 'collab', 'flow', 'service', 'circ', 'none'];
+const WSM = {
+  direction:  { n: 'Direction',        c: '#B02A5B' },
+  commercial: { n: 'Commercial',       c: '#B8560F' },
+  ops:        { n: 'Operating system', c: '#17755F' },
+  people:     { n: 'People',           c: '#2B5FB3' },
+  ideas:      { n: 'Ideas',            c: '#8A6B00' }
+};
+const WORDER = ['direction', 'commercial', 'ops', 'people', 'ideas'];
+const VIEWS = {
+  plan: { rot: 0,   tilt: 0,     zoom: 1.0 },
+  axo:  { rot: -35, tilt: 42,    zoom: 1.1 },
+  iso:  { rot: -45, tilt: 54.74, zoom: 1.15 }
+};
+
+// id, x1, y1, x2, y2, kind (e exterior, w window, i interior), optional start state. Metres, origin top-left of the sketch.
+// Everything sits on a 0.25 m grid. Every door gap is 750 mm.
+const BASE = [
+  ['n00',0,0,0.25,0,'e'],['n0',1,0,5.25,0,'e'],['n1',5.25,0,9,0,'e'],
+  ['e0',9,0,9,3.5,'e'],['e1',9,3.5,9,5.5,'w'],['e2',9,5.5,9,6.5,'e'],['e3',9,7.25,9,10.25,'e'],['e4',9,10.25,9,12.5,'w'],['e5',9,12.5,9,16.5,'e'],['e6',9,16.5,9,19,'w'],['e7',9,19,9,20,'e'],
+  ['s0',0,20,0.5,20,'e'],['s1',0.5,20,2.5,20,'w'],['s2a',2.5,20,6,20,'e'],['s2b',6,20,7,20,'e'],['s3',7,20,8.5,20,'w'],['s4',8.5,20,9,20,'e'],
+  ['w0',0,0,0,0.75,'e'],['w1',0,0.75,0,2.25,'w'],['w2',0,2.25,0,6.5,'e'],['w3',0,6.5,0,8.5,'w'],['w4',0,8.5,0,9.5,'e'],['w5',0,9.5,0,13.5,'w'],['w6',0,13.5,0,15.5,'e'],['w7',0,15.5,0,19,'w'],['w8',0,19,0,20,'e'],
+  ['i3',5.25,0,5.25,6,'i'],['wcm',0,3,5.25,3,'i'],['wcb',0,6,4.5,6,'i'],
+  ['i5',6,6,9,6,'i'],['i6',6.75,6,6.75,7.25,'i'],['i7',4,6,4,8,'i'],
+  ['i8a',0,8.75,2.25,8.75,'i'],['i8b',2.25,8.75,4.25,8.75,'i'],['i9a',4.25,8.75,4.25,12,'i'],['i9b',4.25,12.75,4.25,14.75,'i'],['i10',0,14.75,4.25,14.75,'i'],
+  ['i11a',4.25,14.75,4.25,16.25,'i'],['i11b',4.25,17,4.25,18.5,'i'],['i12',4.25,18.5,6,18.5,'i'],
+  ['i13a',6,8.75,6,11.5,'i'],['i13b',6,12.25,6,14.5,'i'],['i14',6,14.5,9,14.5,'i'],['i15',6,15.25,6,20,'i'],
+  ['i16a',6,8.75,7,8.75,'i'],['i16b',8.25,8.75,9,8.75,'i'],['hatch',7,8.75,8.25,8.75,'i']
+];
+// door markers: x, y, w, h (metres) and the interior walls whose gap they sit in (hidden when all of those are open or gone)
+const DOORS = [
+  [0.25, -0.05, 0.75, 0.1, null], [8.95, 6.5, 0.1, 0.75, null],
+  [4.5, 5.95, 0.75, 0.1, ['wcb']], [5.25, 5.95, 0.75, 0.1, ['i5']], [3.95, 8, 0.1, 0.75, ['i7']],
+  [4.2, 12, 0.1, 0.75, ['i9a']], [4.2, 16.25, 0.1, 0.75, ['i11a']],
+  [5.95, 11.5, 0.1, 0.75, ['i13a']], [5.95, 14.5, 0.1, 0.75, ['i15', 'i15a']]
+];
+
+const Z = (id, x, y, w, h, t, l, g) => ({ id, x, y, w, h, t, l, g: g || id });
+function build(key, patch, zones, add, remove, doors) {
+  const walls = BASE.map(r => ({ id: r[0], a: [r[1], r[2]], b: [r[3], r[4]], k: r[5], s: r[6] || 'solid', ws: null }));
+  (add || []).forEach(r => walls.push({ id: r[0], a: [r[1], r[2]], b: [r[3], r[4]], k: 'i', s: 'solid', ws: null }));
+  const kept = walls.filter(w => (remove || []).indexOf(w.id) < 0);
+  Object.keys(patch).forEach(id => { Object.assign(kept.find(w => w.id === id), patch[id]); });
+  return { preset: key, walls: kept, zones, doors: DOORS.concat(doors || []).map(d => d.slice()) };
+}
+const LAYOUTS = {
+  today: () => build('today', {}, [
+    Z('z1',0,0,5.25,3,'service','WC'), Z('z2',0,3,5.25,3,'service','WC'),
+    Z('z4',5.25,0,3.75,6,'none','Office 1'), Z('z5',0,6,4,2.75,'service','Kitchen'), Z('z6',4,6,5,2.75,'circ','Entrance'),
+    Z('z7',0,8.75,4.25,6,'none','Office 3'), Z('z8',0,14.75,4.25,5.25,'none','Office 4','z8'), Z('z8b',4.25,18.5,1.75,1.5,'none','','z8'),
+    Z('z9',4.25,8.75,1.75,9.75,'circ','Corridor'), Z('z10',6,8.75,3,5.75,'none','Office 2'), Z('z11',6,14.5,3,5.5,'client','Boardroom')
+  ]),
+  flow1: () => build('flow1', {
+    i8a: { s: 'flow', ws: 'direction', side: 'f' }, i8b: { s: 'flow', ws: 'commercial', side: 'f' },
+    i10: { s: 'flow', ws: 'ops', side: 'b' },
+    i9a: { s: 'flow', ws: 'people', side: 'f' }, i9b: { s: 'flow', ws: 'ideas', side: 'f' }
+  }, [
+    Z('z1',0,0,5.25,3,'service','WC'), Z('z2',0,3,5.25,3,'service','WC'),
+    Z('z4',5.25,0,3.75,6,'client','Client presentation'), Z('z5',0,6,4,2.75,'service','Kitchen'), Z('z6',4,6,5,2.75,'welcome','Welcome'),
+    Z('z7',0,8.75,4.25,6,'flow','Flow room'), Z('z8',0,14.75,4.25,5.25,'focus','Focus 4','z8'), Z('z8b',4.25,18.5,1.75,1.5,'focus','','z8'),
+    Z('z9',4.25,8.75,1.75,9.75,'circ','Corridor'), Z('z10',6,8.75,3,5.75,'focus','Focus 2'), Z('z11',6,14.5,3,5.5,'service','Store')
+  ]),
+  hub: () => build('hub', {
+    i6: { s: 'open' }, i14: { s: 'open' },
+    i9a: { s: 'open' }, i9b: { s: 'open' }, i10: { s: 'open' }, i11a: { s: 'open' }, i11b: { s: 'open' }, i12: { s: 'open' },
+    w5: { s: 'flow', ws: 'direction', side: 'b' }, w6: { s: 'flow', ws: 'commercial', side: 'b' }, w7: { s: 'flow', ws: 'ops', side: 'b' },
+    s1: { s: 'flow', ws: 'people', side: 'b' }, s2a: { s: 'flow', ws: 'ideas', side: 'b' }
+  }, [
+    Z('z1',0,0,5.25,3,'service','WC'), Z('z2',0,3,5.25,3,'service','WC'),
+    Z('z4',5.25,0,3.75,6,'client','Client presentation'), Z('z5',0,6,4,2.75,'service','Kitchen'), Z('z6',4,6,5,2.75,'welcome','Client welcome'),
+    Z('z7',0,8.75,6,11.25,'flow','Flow room'),
+    Z('zd1',6,8.75,3,3.75,'focus','Focus 1'), Z('zd2',6,12.5,3,3.75,'focus','Focus 2'), Z('zd3',6,16.25,3,3.75,'service','Store')
+  ], [
+    ['k1',4.25,8.75,4.75,8.75], ['k2',5.5,8.75,6,8.75],
+    ['i15a',6,15.25,6,17.5], ['i15b',6,18.25,6,20],
+    ['d1',6,12.5,9,12.5], ['d2',6,16.25,9,16.25]
+  ], ['i15'], [[5.95, 17.5, 0.1, 0.75, ['i15b']]])
+};
+const LAYOUT_INFO = [
+  { k: 'today', name: 'Today', desc: 'The building as sketched.' },
+  { k: 'flow1', name: 'Today + flow walls', desc: 'Same walls. Office 1 is the client presentation room, Office 3 holds all five flow walls, Offices 2 and 4 are focus rooms, the old boardroom is the store.' },
+  { k: 'hub', name: 'Flow hub, client front', desc: 'Office 1 is the client presentation room. Offices 3, 4 and the corridor become an open design studio, with the flow walls on its two outside walls. The east side is two focus rooms and a store.' }
+];
+
+function furnish(z) {
+  const out = [], L = z.l || '';
+  const box = (x, y, w, h, ht, c) => out.push({ k: 'box', x, y, w, h, ht, c });
+  const seat = (x, y) => out.push({ k: 'box', x, y, w: 0.45, h: 0.45, ht: 0.45, c: '#4B4F55' });
+  const stool = (x, y) => out.push({ k: 'box', x, y, w: 0.35, h: 0.35, ht: 0.65, c: '#4B4F55' });
+  const bars = (cols) => cols.map((c, i) => 'linear-gradient(' + c + ',' + c + ') ' + (8 + i * 22) + '% 85%/14% ' + (30 + (i * 37) % 45) + '% no-repeat').join(',') + ',#1F2933';
+  const panel = (x, y, w, h, zb, ht, c, bg) => out.push({ k: 'box', x, y, w, h, ht, zb, c, bg });
+  if (z.t === 'flow' && z.w >= 5.5 && z.h >= 10) {
+    const tc = '#D8C7A0';
+    [z.x + 0.9, z.x + 3.2].forEach(tx => [2.4, 5.2, 8.0].forEach(dy => {
+      const ty = z.y + dy;
+      box(tx, ty, 2.0, 0.9, 1.05, tc);
+      stool(tx + 0.4, ty - 0.45); stool(tx + 1.25, ty - 0.45);
+      stool(tx + 0.4, ty + 1.0); stool(tx + 1.25, ty + 1.0);
+    }));
+    panel(z.x + 0.4, z.y + 0.05, 2.5, 0.06, 0.8, 2.3, '#F4F6F8');
+    panel(z.x + z.w - 0.11, z.y + 6.65, 0.06, 2.0, 0.8, 2.3, '#F4F6F8');
+    panel(z.x + 3.0, z.y + 0.05, 1.25, 0.06, 1.1, 2.1, '#1F2933', bars(['#3DD6A6', '#F5A400', '#5B8DEF']));
+    panel(z.x + z.w - 0.11, z.y + 0.25, 0.06, 2.0, 1.1, 2.1, '#1F2933', bars(['#E5586E', '#3DD6A6', '#F5A400']));
+    panel(z.x + z.w - 0.11, z.y + 3.75, 0.06, 1.75, 1.1, 2.1, '#1F2933', bars(['#5B8DEF', '#F5A400', '#3DD6A6']));
+    return out;
+  }
+  if (/wc/i.test(L)) {
+    box(z.x + z.w - 0.55, z.y + z.h / 2 - 0.35, 0.45, 0.7, 0.4, '#FFFFFF');
+    box(z.x + z.w - 0.45, z.y + z.h / 2 + 0.8, 0.35, 0.55, 0.85, '#F4F4F0');
+    return out;
+  }
+  if (/kitchen/i.test(L)) {
+    box(z.x + 0.15, z.y + 0.1, z.w - 0.3, 0.6, 0.9, '#B8B4A8');
+    box(z.x + z.w / 2 - 0.6, z.y + z.h / 2 + 0.2, 1.2, 0.8, 0.75, '#D9CBA9');
+    seat(z.x + z.w / 2 - 0.5, z.y + z.h / 2 + 1.05); seat(z.x + z.w / 2 + 0.05, z.y + z.h / 2 + 1.05);
+    return out;
+  }
+  if (/store/i.test(L)) {
+    box(z.x + z.w - 0.55, z.y + 0.4, 0.45, z.h - 0.8, 1.8, '#B8A98A');
+    box(z.x + 0.35, z.y + z.h - 0.55, z.w - 1.2, 0.45, 1.8, '#B8A98A');
+    return out;
+  }
+  if (z.t === 'welcome') return out;
+  const m = 0.45, iw = z.w - 2 * m, ih = z.h - 2 * m;
+  if (iw < 0.9 || ih < 0.9) return out;
+  if (z.t === 'focus' || z.t === 'none') {
+    const dw = 1.4, dh = 0.7, gx = 0.5, py = dh + 1.0;
+    if (iw < dw) return out;
+    const cols = Math.min(2, Math.max(1, Math.floor((iw + gx) / (dw + gx))));
+    const rows = z.t === 'none' ? 1 : Math.min(2, Math.max(1, Math.floor(ih / py)));
+    const tw = cols * dw + (cols - 1) * gx, th = (rows - 1) * py + dh + 0.55;
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const x = z.x + (z.w - tw) / 2 + c * (dw + gx), y = z.y + (z.h - th) / 2 + r * py;
+      box(x, y, dw, dh, 0.74, '#D9CBA9');
+      seat(x + dw / 2 - 0.225, y + dh + 0.1);
+    }
+  } else if (z.t === 'client' || z.t === 'collab') {
+    const col = z.t === 'client' ? '#EDBB9E' : '#A9D6C1';
+    if (z.t === 'client' && Math.min(z.w, z.h) < 2.4) {
+      const cx = z.x + z.w / 2, cy = z.y + z.h / 2;
+      out.push({ k: 'disc', x: cx - 0.6, y: cy - 0.6, w: 1.2, h: 1.2, ht: 0.74, c: col });
+      seat(cx - 0.225, cy - 1.1); seat(cx - 0.225, cy + 0.65); seat(cx - 1.1, cy - 0.225); seat(cx + 0.65, cy - 0.225);
+    } else {
+      const horiz = z.w >= z.h, th = z.t === 'client' ? 1.1 : 1.0;
+      const long = Math.max(1.4, Math.min(z.t === 'client' ? 3.4 : 2.8, Math.max(iw, ih) - 1.0));
+      const tw = horiz ? long : th, tt = horiz ? th : long;
+      const tx = z.x + (z.w - tw) / 2, ty = z.y + (z.h - tt) / 2;
+      box(tx, ty, tw, tt, 0.74, col);
+      const n = Math.max(1, Math.floor(long / 0.8));
+      for (let i = 0; i < n; i++) {
+        const o = (i + 0.5) * long / n - 0.225;
+        if (horiz) { seat(tx + o, ty - 0.55); seat(tx + o, ty + th + 0.1); }
+        else { seat(tx - 0.55, ty + o); seat(tx + th + 0.1, ty + o); }
+      }
+    }
+  } else if (z.t === 'flow') {
+    const d = Math.min(3.4, Math.min(iw, ih) * 0.7);
+    if (d >= 1.6 && L) out.push({ k: 'ring', x: z.x + z.w / 2 - d / 2, y: z.y + z.h / 2 - d / 2, w: d, h: d, ht: 0.05, c: ZT.flow.c });
+  }
+  return out;
+}
+
+const snap = (v) => Math.round(v * 4) / 4;
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const clone = (o) => JSON.parse(JSON.stringify(o));
+const wlen = (w) => Math.hypot(w.b[0] - w.a[0], w.b[1] - w.a[1]);
+
+class Component extends DCLogic {
+  getModel() { return (this.state && this.state.model) || LAYOUTS.today(); }
+
+  renderVals() {
+    const st = this.state || {};
+    const model = this.getModel();
+    const sel = st.sel || null;
+    const mode = st.mode || 'model';
+    const tool = st.tool || 'select';
+    const viewKey = st.view !== undefined ? st.view : 'iso';
+    const rot = st.rot !== undefined ? st.rot : VIEWS.iso.rot;
+    const tilt = st.tilt !== undefined ? st.tilt : VIEWS.iso.tilt;
+    const zoom = st.zoom !== undefined ? st.zoom : VIEWS.iso.zoom;
+    const cut = !!st.cut, furn = !!st.furn, rotating = !!st.rotating, dragging = !!st.dragging;
+    const step = 0.25;
+    const draw = st.draw || null;
+    const set = (p) => this.setState(p);
+    const stop = (e) => { if (e && e.stopPropagation) e.stopPropagation(); };
+    const upd = (fn) => { const m = clone(this.getModel()); fn(m); this.setState({ model: m }); };
+    const btn = (on) => on ? 'background:#1B1D1F;color:#F4F2EC;border:1px solid #1B1D1F' : 'background:#FBFAF6;color:#1B1D1F;border:1px solid #BDB9AD';
+    const isSel = (t, id) => !!(sel && sel.t === t && sel.id === id);
+    const gOf = (z) => z.g || z.id;
+    const selZone = sel && sel.t === 'z' ? model.zones.find(z => z.id === sel.id) : null;
+    const selGroup = selZone ? gOf(selZone) : null;
+    const zoneSel = (z) => !!selGroup && gOf(z) === selGroup;
+
+    // ---------- edit operations
+    const setWall = (id, patch) => upd(m => {
+      const w = m.walls.find(x => x.id === id);
+      Object.assign(w, patch);
+      if (w.s === 'flow' && !w.ws) {
+        const used = new Set(m.walls.filter(x => x.s === 'flow' && x.id !== id).map(x => x.ws));
+        w.ws = WORDER.find(k => !used.has(k)) || 'ideas';
+      }
+      if (w.s === 'flow' && !w.side) w.side = 'f';
+      if (w.s !== 'flow') { w.ws = null; w.side = null; }
+    });
+    const moveWall = (id, dx, dy) => upd(m => {
+      const w = m.walls.find(x => x.id === id);
+      const x0 = Math.min(w.a[0], w.b[0]), x1 = Math.max(w.a[0], w.b[0]), y0 = Math.min(w.a[1], w.b[1]), y1 = Math.max(w.a[1], w.b[1]);
+      const ddx = clamp(dx, -x0, BW - x1), ddy = clamp(dy, -y0, BD - y1);
+      w.a = [snap(w.a[0] + ddx), snap(w.a[1] + ddy)]; w.b = [snap(w.b[0] + ddx), snap(w.b[1] + ddy)];
+    });
+    const lengthWall = (id, d) => upd(m => {
+      const w = m.walls.find(x => x.id === id);
+      if (w.a[1] === w.b[1]) w.b[0] = snap(clamp(w.b[0] + d, w.a[0] + 0.25, BW));
+      else w.b[1] = snap(clamp(w.b[1] + d, w.a[1] + 0.25, BD));
+    });
+    const turnWall = (id) => upd(m => {
+      const w = m.walls.find(x => x.id === id);
+      const L = wlen(w);
+      if (w.a[1] === w.b[1]) { const y = Math.min(w.a[1], BD - L); w.a = [w.a[0], y]; w.b = [w.a[0], y + L]; }
+      else { const x = Math.min(w.a[0], BW - L); w.a = [x, w.a[1]]; w.b = [x + L, w.a[1]]; }
+    });
+    const delWall = (id) => { upd(m => { m.walls = m.walls.filter(x => x.id !== id); }); set({ sel: null }); };
+    const moveZone = (id, dx, dy) => upd(m => {
+      const z = m.zones.find(x => x.id === id);
+      z.x = snap(clamp(z.x + dx, 0, BW - z.w)); z.y = snap(clamp(z.y + dy, 0, BD - z.h));
+    });
+    const sizeZone = (id, dw, dh) => upd(m => {
+      const z = m.zones.find(x => x.id === id);
+      z.w = snap(clamp(z.w + dw, 0.5, BW - z.x)); z.h = snap(clamp(z.h + dh, 0.5, BD - z.y));
+    });
+    const setZoneType = (id, t) => upd(m => {
+      const zz = m.zones.find(x => x.id === id), g = gOf(zz);
+      m.zones.forEach(z => { if (gOf(z) === g) z.t = t; });
+    });
+    const delZone = (id) => { upd(m => { m.zones = m.zones.filter(x => x.id !== id); }); set({ sel: null }); };
+    const nextId = (arr, p) => { let n = 1; while (arr.some(x => x.id === p + n)) n++; return p + n; };
+    const addWall = () => {
+      let id;
+      upd(m => { id = nextId(m.walls, 'u'); m.walls.push({ id, a: [3, 10], b: [6, 10], k: 'i', s: 'solid', ws: null }); });
+      set({ sel: { t: 'w', id } });
+    };
+    const addRoom = () => {
+      let id;
+      upd(m => { id = nextId(m.zones, 'uz'); m.zones.push(Z(id, 3, 10, 3, 3, 'none', 'New room')); });
+      set({ sel: { t: 'z', id } });
+    };
+
+    // visible door markers
+    const doorsVis = (model.doors || []).filter(d => !d[4] || d[4].some(id => { const w = model.walls.find(x => x.id === id); return w && w.s !== 'open'; }));
+
+    // ---------- 3D walls: a real wall (two faces, thickness, cap) with an optional flow panel on each side
+    const showGhost = model.preset === 'today';
+    const walls3d = model.walls.map(w => {
+      const L = wlen(w) * S;
+      const dx = w.b[0] - w.a[0], dy = w.b[1] - w.a[1];
+      const ang = Math.atan2(dy, dx) * 180 / Math.PI;
+      const open = w.s === 'open', flow = w.s === 'flow', glass = w.s === 'glass', win = w.k === 'w';
+      const h = (flow ? 2.7 : (cut ? 1.05 : 2.7)) * S;
+      const t = (w.k === 'i' ? 0.1 : 0.18) * S;
+      const selected = isSel('w', w.id);
+      const col = flow ? WSM[w.ws].c : INK;
+      let bg, border = 'none';
+      if (glass) { bg = 'rgba(150,198,222,.40)'; border = '1px solid rgba(60,110,140,.75)'; }
+      else bg = w.k === 'i' ? '#F7F5EF' : '#DEDACE';
+      const shade = dx === 0 ? 'filter:brightness(.93);' : '';
+      const sh = selected ? 'box-shadow:inset 0 0 0 3px ' + ACC + ';' : '';
+      const common = 'width:' + L + 'px;height:' + h + 'px;transform-origin:0 100%;background:' + bg + ';border:' + border + ';box-sizing:border-box;backface-visibility:hidden;' + shade + sh;
+      const front = 'display:' + (open ? 'none' : 'block') + ';left:0px;top:' + (-h + t / 2) + 'px;' + common + 'transform:rotateX(-90deg);';
+      const back = 'display:' + (open ? 'none' : 'block') + ';left:0px;top:' + (-h - t / 2) + 'px;' + common + 'transform:translateX(' + L + 'px) rotateZ(180deg) rotateX(-90deg);';
+      const cap = 'display:' + (open ? 'none' : 'block') + ';left:0px;top:' + (-t / 2) + 'px;width:' + L + 'px;height:' + t + 'px;transform:translateZ(' + h + 'px);background:' + (selected ? ACC : '#2B2D30') + ';';
+      const ghostOn = open && (showGhost || selected);
+      const ghost = 'display:' + (ghostOn ? 'block' : 'none') + ';left:0px;top:-4px;width:' + L + 'px;height:8px;transform:translateZ(2px);background:' + (selected ? ACC : 'repeating-linear-gradient(90deg,rgba(27,29,31,.6) 0 6px,transparent 6px 12px)') + ';';
+      const pane = (win && !cut && !open) ? 'left:8%;right:8%;top:22%;bottom:16%;background:rgba(160,210,232,.6);border:1px solid rgba(255,255,255,.8);box-sizing:border-box' : 'display:none';
+      // flow panel: sits just proud of each face, inset from the edges so the wall shows around it
+      const inset = 0.1 * S, off = 1.5, pw = Math.max(L - 2 * inset, 1), ph = Math.max(h - 2 * inset, 1);
+      const tint = flow ? 'color-mix(in srgb,' + col + ' 14%,#ffffff)' : '#fff';
+      const pbg = flow ? 'repeating-linear-gradient(90deg,rgba(255,255,255,.9) 0 2px,transparent 2px 19px),linear-gradient(to bottom,' + col + ' 0,' + col + ' 24%,' + tint + ' 24%)' : 'transparent';
+      const pcommon = 'width:' + pw + 'px;height:' + ph + 'px;transform-origin:0 100%;background:' + pbg + ';box-sizing:border-box;backface-visibility:hidden;';
+      const rev = dx < 0 || dy < 0, sw = (w.side !== 'b') !== rev;
+      const show = flow && !open ? 'block' : 'none';
+      const showF = flow && !open && sw ? 'block' : 'none', showB = flow && !open && !sw ? 'block' : 'none';
+      const panelF = 'display:' + showF + ';left:' + inset + 'px;top:' + (-ph + t / 2 + off) + 'px;' + pcommon + 'transform:translateZ(' + inset + 'px) rotateX(-90deg);';
+      const panelB = 'display:' + showB + ';left:' + inset + 'px;top:' + (-ph - t / 2 - off) + 'px;' + pcommon + 'transform:translateX(' + L + 'px) rotateZ(180deg) translateZ(' + inset + 'px) rotateX(-90deg);';
+      const label = flow ? WSM[w.ws].n : '';
+      const fs = flow ? Math.max(7, Math.min(13, Math.floor((pw - 8) / (label.length * 0.62)))) : 10;
+      return {
+        wrap: 'transform:translate3d(' + (w.a[0] * S) + 'px,' + (w.a[1] * S) + 'px,0) rotateZ(' + ang + 'deg);',
+        front, back, cap, ghost, pane, panelF, panelB, label, fs,
+        pick: (e) => { stop(e); set({ sel: { t: 'w', id: w.id } }); }
+      };
+    });
+
+    // ---------- 3D zones, doors
+    const zones3d = model.zones.map(z => {
+      const c = ZT[z.t].c;
+      const bg = z.t === 'none'
+        ? 'repeating-linear-gradient(45deg,rgba(27,29,31,.07) 0 4px,transparent 4px 9px)'
+        : 'color-mix(in srgb,' + c + ' ' + (z.t === 'circ' ? 22 : 30) + '%,transparent)';
+      const ol = zoneSel(z) ? 'outline:3px solid ' + ACC + ';outline-offset:-3px;' : '';
+      return {
+        css: 'left:' + (z.x * S) + 'px;top:' + (z.y * S) + 'px;width:' + (z.w * S) + 'px;height:' + (z.h * S) + 'px;background:' + bg + ';box-shadow:inset 0 0 0 1px color-mix(in srgb,' + c + ' 55%,transparent);' + ol,
+        label: z.l,
+        pick: (e) => { stop(e); set({ sel: { t: 'z', id: z.id } }); }
+      };
+    });
+    const doors3d = doorsVis.map(d => ({ css: 'left:' + (d[0] * S) + 'px;top:' + (d[1] * S) + 'px;width:' + (d[2] * S) + 'px;height:' + (d[3] * S) + 'px;' }));
+
+    // ---------- furniture (toggle)
+    const fsh = [], fsegs = [], ftops = [];
+    if (furn) {
+      model.zones.forEach(z => furnish(z).forEach(f => {
+        const pos = 'left:' + (f.x * S) + 'px;top:' + (f.y * S) + 'px;width:' + (f.w * S) + 'px;height:' + (f.h * S) + 'px;';
+        const z0 = f.ht * S, zbp = (f.zb || 0) * S;
+        if (f.k === 'ring') {
+          ftops.push({ css: pos + 'transform:translateZ(3px);border-radius:50%;border:2px dashed ' + f.c + ';background:color-mix(in srgb,' + f.c + ' 12%,transparent)' });
+          return;
+        }
+        const r = f.k === 'disc' ? 'border-radius:50%;' : '';
+        if (!zbp) fsh.push({ css: pos + r + 'transform:translateZ(1.5px);background:rgba(27,29,31,.2);margin:3px 0 0 3px' });
+        ftops.push({ css: pos + r + 'transform:translateZ(' + (z0 + zbp) + 'px);background:' + (f.bg || f.c) + ';border:1px solid rgba(27,29,31,.35);filter:brightness(1.08)' });
+        if (f.k === 'box') {
+          const side = (x1, y1, x2, y2, ang, br) => {
+            const len = Math.hypot(x2 - x1, y2 - y1) * S;
+            fsegs.push({
+              wrap: 'transform:translate3d(' + (x1 * S) + 'px,' + (y1 * S) + 'px,' + zbp + 'px) rotateZ(' + ang + 'deg);',
+              face: 'left:0px;top:' + (-z0) + 'px;width:' + len + 'px;height:' + z0 + 'px;transform-origin:0 100%;transform:rotateX(-90deg);background:' + (f.bg || f.c) + ';border:1px solid rgba(27,29,31,.3);filter:brightness(' + br + ')'
+            });
+          };
+          side(f.x, f.y, f.x + f.w, f.y, 0, 0.95);
+          side(f.x, f.y + f.h, f.x + f.w, f.y + f.h, 0, 0.9);
+          side(f.x, f.y, f.x, f.y + f.h, 90, 0.8);
+          side(f.x + f.w, f.y, f.x + f.w, f.y + f.h, 90, 0.8);
+        }
+      }));
+    }
+
+    // ---------- plan views (mini plan and the large edit plan share this)
+    const pd = (info) => (e) => {
+      stop(e);
+      this._pd = Object.assign({ sx: e.clientX, sy: e.clientY, moved: false }, info);
+      set({ sel: { t: info.t, id: info.id } });
+    };
+    const mkPlan = (sc, tl) => {
+      const zones = model.zones.map(z => {
+        const c = ZT[z.t].c;
+        const bg = z.t === 'none'
+          ? 'repeating-linear-gradient(45deg,rgba(27,29,31,.08) 0 3px,transparent 3px 7px)'
+          : 'color-mix(in srgb,' + c + ' 32%,transparent)';
+        const ol = zoneSel(z) ? 'outline:2px solid ' + ACC + ';outline-offset:-2px;' : '';
+        return {
+          css: 'left:' + (z.x * sc) + 'px;top:' + (z.y * sc) + 'px;width:' + (z.w * sc) + 'px;height:' + (z.h * sc) + 'px;background:' + bg + ';' + ol + 'pointer-events:' + (tl === 'select' ? 'auto' : 'none') + ';cursor:' + (tl === 'select' ? 'move' : 'default') + ';',
+          label: (z.w * z.h >= (sc > 20 ? 4 : 12)) ? z.l : '',
+          down: pd({ t: 'z', id: z.id, ox: z.x, oy: z.y, sc })
+        };
+      });
+      const hp = sc > 20 ? 7 : 6;
+      const walls = model.walls.slice().sort((a, b) => (isSel('w', a.id) ? 1 : 0) - (isSel('w', b.id) ? 1 : 0)).map(w => {
+        const horiz = w.a[1] === w.b[1];
+        const x1 = Math.min(w.a[0], w.b[0]) * sc, y1 = Math.min(w.a[1], w.b[1]) * sc, L = wlen(w) * sc;
+        const flow = w.s === 'flow', open = w.s === 'open', selected = isSel('w', w.id);
+        const t = selected ? 6 : (flow ? 6 : (w.k === 'i' ? 3 : 4));
+        const color = selected ? ACC : (flow ? WSM[w.ws].c : (w.k === 'w' ? '#9CC9E0' : (w.s === 'glass' ? '#5BA3C9' : INK)));
+        const hidden = open && !selected && model.preset !== 'today';
+        const ptr = (tl === 'draw' || hidden) ? 'none' : 'auto';
+        const cur = tl === 'erase' ? (w.k === 'i' ? 'not-allowed' : 'default') : 'pointer';
+        const hit = (horiz ? 'left:' + x1 + 'px;top:' + (y1 - hp) + 'px;width:' + L + 'px;height:' + (hp * 2) + 'px;' : 'left:' + (x1 - hp) + 'px;top:' + y1 + 'px;width:' + (hp * 2) + 'px;height:' + L + 'px;') + 'pointer-events:' + ptr + ';cursor:' + cur + ';';
+        let line;
+        if (hidden) {
+          line = 'display:none';
+        } else if (open && !selected) {
+          line = horiz ? 'left:0;top:' + (hp - 1) + 'px;width:100%;height:0;border-top:2px dashed #7C7A70' : 'left:' + (hp - 1) + 'px;top:0;height:100%;width:0;border-left:2px dashed #7C7A70';
+        } else {
+          // a flow wall keeps its real wall (dark core) with the flow colour around it
+          const tt = flow ? 3 : t, bgc = flow ? INK : color;
+          const sgn = ((w.side !== 'b') !== (w.b[0] < w.a[0] || w.b[1] < w.a[1])) ? 1 : -1;
+          const fc = selected ? ACC : (flow ? WSM[w.ws].c : '');
+          const halo = flow ? 'box-shadow:' + (horiz ? '0 ' + (sgn * 3) : (-sgn * 3) + 'px 0') + 'px 0 0 ' + fc + ';' : '';
+          line = (horiz ? 'left:0;top:' + (hp - tt / 2) + 'px;width:100%;height:' + tt + 'px;' : 'left:' + (hp - tt / 2) + 'px;top:0;height:100%;width:' + tt + 'px;') + 'background:' + bgc + ';' + halo;
+        }
+        const select = pd({ t: 'w', id: w.id, horiz, oa: w.a.slice(), ob: w.b.slice(), sc });
+        const down = tl === 'erase'
+          ? (e) => { stop(e); if (w.k === 'i') delWall(w.id); else set({ sel: { t: 'w', id: w.id } }); }
+          : select;
+        return { hit, line, down };
+      });
+      const doors = doorsVis.map(d => ({ css: 'left:' + (d[0] * sc) + 'px;top:' + (d[1] * sc) + 'px;width:' + Math.max(d[2] * sc, 3) + 'px;height:' + Math.max(d[3] * sc, 3) + 'px;' }));
+      return { zones, walls, doors };
+    };
+    const mini = mkPlan(PS, 'select');
+    const edit = mkPlan(EPS, tool);
+
+    // dimension labels in the edit plan
+    const editDims = [];
+    if (mode === 'edit') {
+      if (draw) {
+        const l = Math.hypot(draw.x1 - draw.x0, draw.y1 - draw.y0);
+        if (l > 0.05) editDims.push({ text: l.toFixed(2) + ' m', css: 'left:' + ((draw.x0 + draw.x1) / 2 * EPS + 8) + 'px;top:' + ((draw.y0 + draw.y1) / 2 * EPS - 24) + 'px;' });
+      } else if (sel && sel.t === 'w') {
+        const w = model.walls.find(x => x.id === sel.id);
+        if (w) editDims.push({ text: wlen(w).toFixed(2) + ' m', css: 'left:' + ((w.a[0] + w.b[0]) / 2 * EPS + 10) + 'px;top:' + ((w.a[1] + w.b[1]) / 2 * EPS - 24) + 'px;' });
+      }
+    }
+    if (draw) {
+      const horiz = draw.y0 === draw.y1;
+      const x1 = Math.min(draw.x0, draw.x1) * EPS, y1 = Math.min(draw.y0, draw.y1) * EPS, L = Math.hypot(draw.x1 - draw.x0, draw.y1 - draw.y0) * EPS;
+      edit.walls.push({
+        hit: (horiz ? 'left:' + x1 + 'px;top:' + (y1 - 7) + 'px;width:' + L + 'px;height:14px;' : 'left:' + (x1 - 7) + 'px;top:' + y1 + 'px;width:14px;height:' + L + 'px;') + 'pointer-events:none;',
+        line: horiz ? 'left:0;top:4px;width:100%;height:6px;background:' + ACC : 'left:4px;top:0;height:100%;width:6px;background:' + ACC,
+        down: () => {}
+      });
+    }
+
+    // drag walls and rooms (select tool)
+    const planMove = (e) => {
+      const p = this._pd;
+      if (!p) return;
+      const sc = p.sc;
+      if (!p.moved && Math.abs(e.clientX - p.sx) < 3 && Math.abs(e.clientY - p.sy) < 3) return;
+      p.moved = true;
+      const dx = snap((e.clientX - p.sx) / sc), dy = snap((e.clientY - p.sy) / sc);
+      const m = clone(this.getModel());
+      if (p.t === 'w') {
+        const w = m.walls.find(x => x.id === p.id);
+        if (!w || w.k !== 'i') return;
+        const x0 = Math.min(p.oa[0], p.ob[0]), x1 = Math.max(p.oa[0], p.ob[0]), y0 = Math.min(p.oa[1], p.ob[1]), y1 = Math.max(p.oa[1], p.ob[1]);
+        const ddx = p.horiz ? 0 : clamp(dx, -x0, BW - x1), ddy = p.horiz ? clamp(dy, -y0, BD - y1) : 0;
+        w.a = [snap(p.oa[0] + ddx), snap(p.oa[1] + ddy)]; w.b = [snap(p.ob[0] + ddx), snap(p.ob[1] + ddy)];
+      } else {
+        const z = m.zones.find(x => x.id === p.id);
+        if (!z) return;
+        z.x = snap(clamp(p.ox + dx, 0, BW - z.w)); z.y = snap(clamp(p.oy + dy, 0, BD - z.h));
+      }
+      this.setState({ model: m });
+    };
+    const planUp = () => { this._pd = null; };
+
+    // draw new walls (draw tool): drag across the edit plan
+    const magnet = (v, arr) => { let best = v, bd = 0.18; arr.forEach(a => { const d = Math.abs(a - v); if (d < bd) { bd = d; best = a; } }); return best; };
+    const lines = () => {
+      const xs = [0, BW], ys = [0, BD];
+      this.getModel().walls.forEach(w => { xs.push(w.a[0], w.b[0]); ys.push(w.a[1], w.b[1]); });
+      return { xs, ys };
+    };
+    const pt = (e) => {
+      const r = this._dr.rect, ln = lines();
+      return [clamp(snap((e.clientX - r.left) / EPS), 0, BW), clamp(snap((e.clientY - r.top) / EPS), 0, BD)];
+    };
+    const editDown = (e) => {
+      if (tool !== 'draw') return;
+      this._dr = { rect: e.currentTarget.getBoundingClientRect() };
+      const p = pt(e);
+      this._dr.x0 = p[0]; this._dr.y0 = p[1];
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) { /* optional */ }
+      set({ draw: { x0: p[0], y0: p[1], x1: p[0], y1: p[1] }, sel: null });
+    };
+    const editMove = (e) => {
+      if (this._dr) {
+        const p = pt(e), d = this._dr;
+        const horiz = Math.abs(p[0] - d.x0) >= Math.abs(p[1] - d.y0);
+        set({ draw: { x0: d.x0, y0: d.y0, x1: horiz ? p[0] : d.x0, y1: horiz ? d.y0 : p[1] } });
+        return;
+      }
+      planMove(e);
+    };
+    const editUp = () => {
+      if (this._dr) {
+        const d = this.state.draw;
+        this._dr = null;
+        if (d && Math.hypot(d.x1 - d.x0, d.y1 - d.y0) >= 0.25) {
+          let id;
+          upd(m => {
+            id = nextId(m.walls, 'u');
+            m.walls.push({ id, a: [Math.min(d.x0, d.x1), Math.min(d.y0, d.y1)], b: [Math.max(d.x0, d.x1), Math.max(d.y0, d.y1)], k: 'i', s: 'solid', ws: null });
+          });
+          set({ draw: null, sel: { t: 'w', id } });
+        } else set({ draw: null });
+        return;
+      }
+      planUp();
+    };
+
+    // ---------- rotate: spin about the vertical axis only, tilt stays as the chosen view
+    const rotDown = (e) => {
+      this._rd = { x: e.clientX, y: e.clientY, rot, tilt };
+      try { e.currentTarget.setPointerCapture(e.pointerId); } catch (err) { /* optional */ }
+      set({ dragging: true });
+    };
+    const rotMove = (e) => {
+      const d = this._rd;
+      if (!d) return;
+      // left/right spins about the vertical axis, up/down tilts the view (down = more from above); walls never lean
+      set({ rot: Math.round(d.rot + (e.clientX - d.x) * 0.2), tilt: clamp(Math.round(d.tilt - (e.clientY - d.y) * 0.1), 25, 75), view: null });
+    };
+    const rotUp = () => { if (this._rd) { this._rd = null; set({ dragging: false }); } };
+
+    // ---------- left rail
+    const total = model.zones.reduce((s, z) => s + z.w * z.h, 0) || 1;
+    const usage = ZORDER.map(k => {
+      const a = model.zones.filter(z => z.t === k).reduce((s, z) => s + z.w * z.h, 0);
+      return { name: ZT[k].n, color: ZT[k].c, area: a.toFixed(0), pct: (a / total * 100).toFixed(1) };
+    });
+    const flowRows = WORDER.map(k => {
+      const l = model.walls.filter(w => w.s === 'flow' && w.ws === k).reduce((s, w) => s + wlen(w), 0);
+      return { name: WSM[k].n, color: WSM[k].c, len: l > 0 ? l.toFixed(1) + ' m' : 'not placed', css: l > 0 ? '' : 'opacity:.62' };
+    });
+    const layouts = LAYOUT_INFO.map(l => {
+      const on = model.preset === l.k;
+      return {
+        name: l.name, desc: l.desc,
+        css: on ? 'background:#1B1D1F;color:#F4F2EC;border:1px solid #1B1D1F' : 'background:#FBFAF6;color:#1B1D1F;border:1px solid #BDB9AD',
+        sub: on ? 'color:#CFCCC2' : 'color:#4A4D51',
+        pick: () => set({ model: LAYOUTS[l.k](), sel: null })
+      };
+    });
+    const layoutName = (LAYOUT_INFO.find(l => l.k === model.preset) || LAYOUT_INFO[0]).name;
+
+    // ---------- toolbar
+    const tabs = [
+      { label: '3D model', aria: 'Show the 3D model', css: btn(mode === 'model'), pick: () => set({ mode: 'model', draw: null }) },
+      { label: 'Edit plan', aria: 'Edit the plan: draw and erase walls', css: btn(mode === 'edit'), pick: () => set({ mode: 'edit', rotating: false }) }
+    ];
+    const gap = { label: '', aria: 'separator', css: 'visibility:hidden;min-width:0;width:6px;padding:0;border:none', pick: () => {} };
+    const viewBtn = (label, key) => ({ label, aria: label + ' view', css: btn(viewKey === key), pick: () => set(Object.assign({ view: key, rotating: false }, VIEWS[key])) });
+    let row1, row2;
+    if (mode === 'model') {
+      row1 = tabs.concat([gap, viewBtn('Plan', 'plan'), viewBtn('Axo', 'axo'), viewBtn('Iso', 'iso'),
+        { label: 'Rotate', aria: 'Spin the model about its vertical axis by dragging', css: btn(rotating), pick: () => set({ rotating: !rotating }) },
+        { label: '−', aria: 'Zoom out', css: btn(false), pick: () => set({ zoom: Math.max(0.6, zoom - 0.12) }) },
+        { label: '+', aria: 'Zoom in', css: btn(false), pick: () => set({ zoom: Math.min(1.8, zoom + 0.12) }) }]);
+      row2 = [
+        { label: 'Full walls', aria: 'Full height walls', css: btn(!cut), pick: () => set({ cut: false }) },
+        { label: 'Cutaway', aria: 'Cutaway walls', css: btn(cut), pick: () => set({ cut: true }) },
+        { label: furn ? 'Remove furniture' : 'Add furniture', aria: 'Toggle furniture', css: btn(furn), pick: () => set({ furn: !furn }) }
+      ];
+    } else {
+      const toolBtn = (label, key, aria) => ({ label, aria, css: btn(tool === key), pick: () => set({ tool: key, draw: null }) });
+      row1 = tabs.concat([gap, toolBtn('Select', 'select', 'Select and drag walls and rooms'), toolBtn('Draw wall', 'draw', 'Draw a wall by dragging on the plan'), toolBtn('Erase wall', 'erase', 'Click a wall to erase it')]);
+      row2 = [{ label: 'Add room', aria: 'Add a room', css: btn(false), pick: addRoom }];
+    }
+    const angle = Math.round(((rot % 360) + 360) % 360);
+    const hint = mode === 'edit'
+      ? (tool === 'draw' ? 'Draw wall: drag across the plan. Walls snap to 0.25 m and run along one axis. Draw as many as you like, then switch to Select.'
+        : tool === 'erase' ? 'Erase wall: click any interior wall to remove it. Exterior walls and windows stay.'
+        : 'Select: click a wall or room, then drag it to move it. Use the panel on the right to change the wall type, length or position.')
+      : (rotating ? 'Rotate: drag left or right to spin the model (now ' + angle + '\u00b0), drag up or down to tilt gently (now ' + Math.round(tilt) + '\u00b0, 0 is straight down). Walls always stay upright. Plan, Axo and Iso reset the view.'
+        : 'Click a wall or room to select it. Use Edit plan to draw, erase and move walls.');
+
+    // ---------- inspector
+    const insp = {
+      emptyDisplay: 'block', wallDisplay: 'none', zoneDisplay: 'none', wsDisplay: 'none', wallToolsDisplay: 'none', moveDisplay: 'none', clearDisplay: 'none',
+      title: '', meta: '', zlabel: '', zmeta: '', stateBtns: [], wsBtns: [], wallTools: [], typeBtns: [], zoneTools: [], steps: [], arrows: [],
+      onLabel: () => {}
+    };
+    const stepBtns = [];
+    const arrows = (fn) => [
+      { label: '←', aria: 'Move left', css: btn(false), pick: () => fn(-step, 0) },
+      { label: '↑', aria: 'Move up', css: btn(false), pick: () => fn(0, -step) },
+      { label: '↓', aria: 'Move down', css: btn(false), pick: () => fn(0, step) },
+      { label: '→', aria: 'Move right', css: btn(false), pick: () => fn(step, 0) }
+    ];
+    if (sel && sel.t === 'w') {
+      const w = model.walls.find(x => x.id === sel.id);
+      if (w) {
+        insp.emptyDisplay = 'none'; insp.wallDisplay = 'flex'; insp.clearDisplay = 'block';
+        insp.title = w.k === 'w' ? 'Window' : (w.k === 'e' ? 'Exterior wall' : 'Interior wall');
+        insp.meta = wlen(w).toFixed(1) + ' m long' + (w.k === 'w' ? ' · fixed' : '') + (w.k === 'e' ? ' · position fixed' : '');
+        let states = [['solid', 'Solid'], ['glass', 'Glass'], ['flow', 'Flow wall'], ['open', 'Open']];
+        if (w.k === 'e') states = states.filter(s => s[0] === 'solid' || s[0] === 'flow');
+        if (w.k === 'w') states = [['solid', 'Window'], ['flow', 'Flow wall']];
+        insp.stateBtns = states.map(s => ({ label: s[1], css: btn(w.s === s[0]), pick: () => setWall(w.id, { s: s[0] }) }));
+        if (w.s === 'flow') {
+          insp.wsDisplay = 'flex';
+          insp.wsBtns = WORDER.map(k => ({ label: WSM[k].n, css: btn(w.ws === k), pick: () => setWall(w.id, { ws: k }) }));
+          const hz = w.a[1] === w.b[1], nm = hz ? ['South side', 'North side'] : ['West side', 'East side'];
+          insp.wsBtns.push({ label: 'Panel: ' + nm[0], css: btn(w.side !== 'b'), pick: () => setWall(w.id, { side: 'f' }) });
+          insp.wsBtns.push({ label: 'Panel: ' + nm[1], css: btn(w.side === 'b'), pick: () => setWall(w.id, { side: 'b' }) });
+        }
+        if (w.k === 'i') {
+          insp.wallToolsDisplay = 'flex'; insp.moveDisplay = 'flex';
+          insp.wallTools = [
+            { label: 'Length −', css: btn(false), pick: () => lengthWall(w.id, -step) },
+            { label: 'Length +', css: btn(false), pick: () => lengthWall(w.id, step) },
+            { label: 'Turn 90°', css: btn(false), pick: () => turnWall(w.id) },
+            { label: 'Delete wall', css: 'background:#FBFAF6;color:#9B1C1C;border:1px solid #BDB9AD', pick: () => delWall(w.id) }
+          ];
+          insp.steps = stepBtns; insp.arrows = arrows((dx, dy) => moveWall(w.id, dx, dy));
+        }
+      }
+    } else if (selZone) {
+      const z = selZone;
+      const gArea = model.zones.filter(q => gOf(q) === gOf(z)).reduce((s, q) => s + q.w * q.h, 0);
+      insp.emptyDisplay = 'none'; insp.zoneDisplay = 'flex'; insp.clearDisplay = 'block'; insp.moveDisplay = 'flex';
+      insp.zlabel = z.l;
+      insp.zmeta = gArea.toFixed(1) + ' m² · this part ' + z.w + ' × ' + z.h + ' m';
+      insp.onLabel = (e) => { const v = e && e.target ? e.target.value : ''; upd(m => { m.zones.find(q => q.id === z.id).l = v; }); };
+      insp.typeBtns = ZORDER.map(k => ({ label: ZT[k].n, color: ZT[k].c, css: btn(z.t === k), pick: () => setZoneType(z.id, k) }));
+      insp.zoneTools = [
+        { label: 'Wider', css: btn(false), pick: () => sizeZone(z.id, step, 0) },
+        { label: 'Narrower', css: btn(false), pick: () => sizeZone(z.id, -step, 0) },
+        { label: 'Taller', css: btn(false), pick: () => sizeZone(z.id, 0, step) },
+        { label: 'Shorter', css: btn(false), pick: () => sizeZone(z.id, 0, -step) },
+        { label: 'Delete room', css: 'background:#FBFAF6;color:#9B1C1C;border:1px solid #BDB9AD', pick: () => delZone(z.id) }
+      ];
+      insp.steps = stepBtns; insp.arrows = arrows((dx, dy) => moveZone(z.id, dx, dy));
+    }
+
+    return {
+      layoutName, layouts, usage, flowRows, hint,
+      row1, row2,
+      modelDisplay: mode === 'model' ? 'block' : 'none',
+      editDisplay: mode === 'edit' ? 'block' : 'none',
+      miniDisplay: mode === 'model' ? 'flex' : 'none',
+      editCursor: tool === 'draw' ? 'crosshair' : 'default',
+      worldCss: 'transform:scale(' + zoom + ') rotateX(' + tilt + 'deg) rotateZ(' + rot + 'deg);transition:' + (dragging ? 'none' : 'transform .55s cubic-bezier(.2,.7,.2,1)') + ';',
+      rotCss: (rotating && mode === 'model') ? 'display:block;cursor:' + (dragging ? 'grabbing' : 'grab') + ';' : 'display:none;',
+      walls3d, zones3d, doors3d, fsh, fsegs, ftops,
+      planZones: mini.zones, planWalls: mini.walls, planDoors: mini.doors,
+      editZones: edit.zones, editWalls: edit.walls, editDoors: edit.doors, editDims,
+      insp,
+      rotDown, rotMove, rotUp, planMove, planUp, editDown, editMove, editUp, addWall, addRoom,
+      resetLayout: () => set({ model: LAYOUTS[model.preset](), sel: null }),
+      clearSel: () => set({ sel: null })
+    };
+  }
+}
+</script>
+</body>
+</html>
