@@ -1,6 +1,6 @@
 # Diesenvale website: design review
 
-**Open the live site: https://aidanodea.github.io/diesenvale-review/**
+**Open the live site: https://aidanodea.github.io/diesenvale-work/**
 
 Static, clickable versions of three design concepts (Variant A, Variant B, New website),
 plus the Flow Space configurator. Open the link above and pick one — no download needed.
@@ -8,10 +8,10 @@ Viewing the files here on GitHub shows their source, not the rendered pages.
 
 | | |
 |---|---|
-| Variant A | https://aidanodea.github.io/diesenvale-review/variant-a/ |
-| Variant B | https://aidanodea.github.io/diesenvale-review/variant-b/ |
-| New website | https://aidanodea.github.io/diesenvale-review/new-website/ |
-| Flow configurator | https://aidanodea.github.io/diesenvale-review/flow-configurator/ |
+| Variant A | https://aidanodea.github.io/diesenvale-work/variant-a/ |
+| Variant B | https://aidanodea.github.io/diesenvale-work/variant-b/ |
+| New website | https://aidanodea.github.io/diesenvale-work/new-website/ |
+| Flow configurator | https://aidanodea.github.io/diesenvale-work/flow-configurator/ |
 
 To preview locally instead: `python3 -m http.server 8000` in this folder, then open
 http://localhost:8000/.
