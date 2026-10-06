@@ -40,3 +40,19 @@ replacing it, so drags survive a re-render. The original artboard is unmodified
 apart from a `noindex` tag.
 
 Fixed 1440 × 900 canvas, so it needs a desktop screen.
+
+## Quote Agent
+
+Folded in from `aidanodea/diesenvale` (which remains live at
+https://aidanodea.github.io/diesenvale/). A single-page case for an AI costing agent
+for fabrication quotes: the problem with quoting by instinct, what the agent does, the
+data that has to exist before it can be built, the two-phase process, and a calculator
+estimating the annual cost of having no system.
+
+Not a website concept either — it sits alongside the review material because it is the
+same client and the same conversation.
+
+Changed on the way in: `noindex` added for consistency with the rest of this repository,
+and the `href="#"` nav link pointed at the contact address so the page carries no dead
+link. **The contact address is still the placeholder `aidan@example.com`** and needs
+replacing before this is shown to anyone.

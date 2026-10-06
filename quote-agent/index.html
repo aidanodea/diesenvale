@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quote Agent — A better way to cost fabrication jobs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #0061FE;
+      --accent-light: #e8f0ff;
+      --accent-mid: #3b82f6;
+      --text: #1a1a1a;
+      --text-muted: #6b7280;
+      --text-dim: #9ca3af;
+      --bg: #ffffff;
+      --bg-subtle: #f7f7f7;
+      --bg-card: #ffffff;
+      --border: #e8e8e8;
+      --border-strong: #d0d0d0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.08), 0 2px 4px rgba(0,0,0,.04);
+      --radius: 8px;
+      --radius-lg: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-name {
+      font-weight: 700;
+      font-size: .95rem;
+      letter-spacing: -.01em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-contact {
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      padding: .4rem .9rem;
+      border: 1.5px solid var(--accent);
+      border-radius: var(--radius);
+      transition: background .15s, color .15s;
+    }
+
+    .nav-contact:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ── LAYOUT ── */
+    .section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+
+    .section--wide {
+      max-width: 960px;
+    }
+
+    .section--subtle {
+      background: var(--bg-subtle);
+    }
+
+    .section-wrap {
+      padding: 0;
+    }
+
+    /* ── OPENING ── */
+    .opening {
+      padding-top: calc(60px + 5rem);
+      padding-bottom: 5rem;
+    }
+
+    .opening h1 {
+      font-family: 'Inter Tight', 'Inter', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    .opening h1 span {
+      color: var(--accent);
+    }
+
+    .opening .lead {
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 600px;
+    }
+
+    /* ── PROSE ── */
+    .prose h2 {
+      font-family: 'Inter Tight', 'Inter', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: -.025em;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+    }
+
+    .prose p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: #2d2d2d;
+      margin-bottom: 1.1rem;
+    }
+
+    .prose p:last-child { margin-bottom: 0; }
+
+    .label {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .75rem;
+    }
+
+    /* ── FLOW STEPS ── */
+    .flow {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .flow-step {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      position: relative;
+      padding-bottom: 2rem;
+    }
+
+    .flow-step:last-child { padding-bottom: 0; }
+
+    .flow-step::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .flow-step:last-child::before { display: none; }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--accent);
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-body { padding-top: .5rem; }
+
+    .step-body strong {
+      display: block;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: .25rem;
+    }
+
+    .step-body p {
+      font-size: .95rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .agent-note {
+      margin-top: 2rem;
+      padding: 1rem 1.25rem;
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: .95rem;
+      color: var(--text);
+    }
+
+    /* ── ACCORDION ── */
+    .accordion-intro {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: #2d2d2d;
+      margin-bottom: 2rem;
+    }
+
+    .accordion { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1.5rem; }
+
+    .acc-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--bg-card);
+      overflow: hidden;
+      transition: box-shadow .2s;
+    }
+
+    .acc-item:hover { box-shadow: var(--shadow-sm); }
+
+    .acc-trigger {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--text);
+      text-align: left;
+      gap: 1rem;
+    }
+
+    .acc-trigger:hover { background: var(--bg-subtle); }
+
+    .acc-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .25s, background .15s;
+      font-size: .75rem;
+      color: var(--text-muted);
+    }
+
+    .acc-item.open .acc-icon {
+      transform: rotate(180deg);
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .acc-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+    }
+
+    .acc-body-inner {
+      padding: 0 1.25rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .acc-list {
+      list-style: none;
+      margin-top: .75rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+    }
+
+    .acc-list li {
+      display: flex;
+      gap: .6rem;
+      font-size: .9rem;
+      line-height: 1.55;
+      color: #3a3a3a;
+    }
+
+    .acc-list li::before {
+      content: '—';
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: .02em;
+    }
+
+    .acc-note {
+      font-size: .875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    /* ── BUILD PHASES ── */
+    .phases { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+
+    .phase-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 2rem;
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .phase-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+
+    .phase-tag {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: .2rem .5rem;
+      border-radius: 4px;
+    }
+
+    .phase-card p {
+      font-size: .95rem;
+      line-height: 1.7;
+      color: #3a3a3a;
+      margin-bottom: .6rem;
+    }
+
+    .phase-card p:last-child { margin-bottom: 0; }
+
+    /* ── CALCULATOR ── */
+    .calc-intro {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: #2d2d2d;
+      margin-bottom: 2rem;
+    }
+
+    .calc-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .calc-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .input-group label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: .35rem;
+    }
+
+    .input-group label span {
+      font-family: 'Inter', monospace;
+      font-weight: 700;
+      color: var(--accent);
+      font-size: .9rem;
+    }
+
+    .input-group .hint {
+      font-size: .75rem;
+      color: var(--text-dim);
+      margin-bottom: .5rem;
+      font-weight: 400;
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--border-strong);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 2px var(--accent), var(--shadow-sm);
+      cursor: pointer;
+      transition: box-shadow .15s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 0 4px rgba(0,97,254,.2), var(--shadow-sm);
+    }
+
+    .calc-outputs {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      position: sticky;
+      top: 80px;
+    }
+
+    .calc-outputs h3 {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .output-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: .6rem 0;
+      border-bottom: 1px solid var(--border);
+      gap: .5rem;
+    }
+
+    .output-row:last-of-type { border-bottom: none; }
+
+    .output-label {
+      font-size: .875rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .output-value {
+      font-family: 'Inter', monospace;
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .output-hero {
+      margin-top: 1.25rem;
+      padding: 1.25rem;
+      background: var(--bg-card);
+      border: 1.5px solid var(--accent);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+
+    .output-hero .hero-label {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: .35rem;
+    }
+
+    .output-hero .hero-number {
+      font-family: 'Inter', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: .5rem;
+    }
+
+    .output-hero .hero-sub {
+      font-size: .8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .calc-footnote {
+      margin-top: 1.5rem;
+      font-size: .85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    footer p {
+      font-size: .9rem;
+      color: var(--text-muted);
+      margin-bottom: .35rem;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .section { padding: 4rem 1.25rem; }
+      .opening { padding-top: calc(60px + 3rem); padding-bottom: 3rem; }
+      .calc-layout { grid-template-columns: 1fr; }
+      .calc-outputs { position: static; }
+      nav { padding: 0 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="mailto:aidan@example.com" class="nav-name">Quote Agent</a>
+  <a href="mailto:aidan@example.com" class="nav-contact">Get in touch</a>
+</nav>
+
+<!-- OPENING -->
+<div class="section opening fade-in">
+  <span class="label">Metal Fabrication</span>
+  <h1>A better way to<br><span>cost fabrication jobs.</span></h1>
+  <p class="lead">Most people costing fabrication jobs do it from experience and instinct. That works until it doesn't — a job comes in thin, a quote goes out wrong, and you've already committed. There's a straightforward fix.</p>
+</div>
+
+<!-- THE PROBLEM -->
+<div class="section-wrap section--subtle">
+  <div class="section prose fade-in">
+    <span class="label">The problem</span>
+    <h2>The knowledge is there.<br>The system isn't.</h2>
+    <p>Quoting by gut feel works well on the jobs you've done a hundred times. You know the steel cost, you know roughly how long it'll take, you build in a bit of room and you're close enough. But that same approach applied to a complex or unfamiliar job — one with multiple operations, unusual materials, tight tolerances — is where things go wrong. Not obviously wrong. Quietly wrong, in ways you only notice when the job's finished and the numbers don't stack.</p>
+    <p>The real cost isn't a single bad quote. It's the compounding effect: margins that drift because there's no consistent model behind them. Jobs won at prices that don't make money. Jobs lost because the quote was too cautious. Hours spent on each one from scratch because there's no structure to pull from.</p>
+    <p>Whoever's doing the quoting has everything needed to cost jobs well — material knowledge, labour intuition, a clear sense of what work is worth. The problem is that knowledge sits in one person's head, applied differently every time, with no way to make it consistent or fast. That's the gap.</p>
+  </div>
+</div>
+
+<!-- THE FIX -->
+<div class="section prose fade-in">
+  <span class="label">The fix</span>
+  <h2>What an agent actually does.</h2>
+  <p>The idea is straightforward: build a system that takes any job description and produces a structured cost estimate — using your data, your rates, your margins. Not a generic template. Not a guess. Your actual numbers, applied consistently every time.</p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <strong>You describe the job</strong>
+        <p>Document, email, rough notes — anything. The agent reads it and extracts what matters: materials, operations, complexity, scope.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <strong>It pulls your rates</strong>
+        <p>Materials costs, labour rates by role, machine time, overhead allocation — all drawn from a structured reference you've built and maintain.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <strong>It applies your margins</strong>
+        <p>Target margin by job type, contingency buffer, subcontractor uplift — configured to match how you actually want to price work.</p>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <strong>You review and send</strong>
+        <p>A complete, structured quote lands in your hands. You check it, adjust where needed, and send it — in a fraction of the usual time.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="agent-note">
+    The agent doesn't replace your knowledge — it applies it consistently. You're still the one who set the rates, defined the margins, and decides what goes out.
+  </div>
+</div>
+
+<!-- REQUIREMENTS -->
+<div class="section-wrap section--subtle">
+<div class="section fade-in">
+  <span class="label">What needs to be in place</span>
+  <h2 class="prose" style="font-family:'Inter Tight','Inter',sans-serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-.025em;line-height:1.2;margin-bottom:1.5rem;">Before anything gets built.</h2>
+
+  <p class="accordion-intro">The agent is only as good as the data behind it. Before building anything, this information needs to exist in a clean, structured format — not in your head, not scattered across old quotes and spreadsheets. Getting it out and organised is the first piece of work, and probably the most valuable.</p>
+
+  <div class="accordion">
+
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span>Materials</span>
+        <div class="acc-icon">▾</div>
+      </button>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <ul class="acc-list">
+            <li>Price list per material type (mild steel, stainless, aluminium, etc.), grade, and form (sheet, tube, bar, plate) — with units (kg, metre, sheet)</li>
+            <li>The stock sizes you actually buy, not theoretical catalogue sizes</li>
+            <li>Waste and yield factors per material type and cut process — how much scrap is typical?</li>
+            <li>Consumables with unit costs: welding wire, gas, grinding discs, abrasives, cutting fluid, paint, primer, fixings</li>
+            <li>Supplier price lists — ideally current, one primary supplier per material category</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span>Labour</span>
+        <div class="acc-icon">▾</div>
+      </button>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <ul class="acc-list">
+            <li>Hourly cost per role — welder, fabricator, machinist, finisher, labourer — true cost including employment on-costs, not the charge-out rate</li>
+            <li>Time estimates per operation type: cutting, bending, welding, grinding, finishing — per unit, metre, or joint</li>
+            <li>Setup time vs. run time — distinguished by machine or process</li>
+            <li>Shift patterns and available productive hours per week</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span>Overhead &amp; Plant</span>
+        <div class="acc-icon">▾</div>
+      </button>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <ul class="acc-list">
+            <li>Machine hourly rates: laser cutter, press brake, MIG/TIG welders, grinders, other equipment — depreciation plus maintenance plus energy per hour</li>
+            <li>Shop overhead rate: rent, insurance, utilities, admin — expressed as €/hour of productive time or as a percentage on top of direct costs</li>
+            <li>Subcontractor rates for anything sent out: galvanising, CNC, specialist coating, etc.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span>Commercial</span>
+        <div class="acc-icon">▾</div>
+      </button>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <ul class="acc-list">
+            <li>Target margin by job type — this likely differs between one-off fabrication, repeat production runs, and installation work</li>
+            <li>Contingency buffer policy — does a complex job carry 10%? Does a repeat job carry 5%? How do you currently decide?</li>
+            <li>Discount authority: what can be given away and how much, before it erodes the business</li>
+            <li>Payment terms assumptions — relevant for cash flow costing on larger jobs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span>Job History</span>
+        <div class="acc-icon">▾</div>
+      </button>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <ul class="acc-list">
+            <li>Past quotes — even rough ones. These are the single best source for calibrating time estimates</li>
+            <li>Actuals vs. estimates: where did jobs overrun? Where were they quicker than expected? This is where the agent gets smarter over time</li>
+            <li>A simple job taxonomy — what categories of work do you actually do? (e.g. structural steel, architectural metalwork, bespoke fabrication, maintenance and repair)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-trigger" aria-expanded="false">
+        <span>Output Format</span>
+        <div class="acc-icon">▾</div>
+      </button>
+      <div class="acc-body">
+        <div class="acc-body-inner">
+          <ul class="acc-list">
+            <li>Standard terms and exclusions — what's always left out of a quote (delivery, design, site work, etc.)</li>
+            <li>How you want quotes to look when they go out — level of detail, line item breakdown, presentation format</li>
+            <li>Any standard wording you always use around validity periods, payment terms, or variations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="acc-note">You probably don't have all of this yet. That's normal. Most of it lives in your head and in old jobs. Working through it together is part of the process, and doing it properly is what makes the agent actually useful.</p>
+
+</div>
+</div>
+
+<!-- HOW IT GETS BUILT -->
+<div class="section prose fade-in">
+  <span class="label">The process</span>
+  <h2>How this gets built.</h2>
+  <p>Two phases. No unnecessary complexity.</p>
+
+  <div class="phases">
+    <div class="phase-card">
+      <h3><span class="phase-tag">Phase 1</span> Figure out what's there</h3>
+      <p>Sit down and go through everything. What data exists, what needs building from scratch, what the agent actually needs to handle day-to-day. We map out the workflows, design the rate card structure, and work out where the gaps are in the data.</p>
+      <p>By the end of this, there's a clear blueprint: what gets built, how it connects, what you'll need to maintain. No guesswork going into the build.</p>
+    </div>
+
+    <div class="phase-card">
+      <h3><span class="phase-tag">Phase 2</span> Build it</h3>
+      <p>Set up the data environment — Google Sheets or Airtable, kept as simple as the job requires. Build the automation workflow connecting a job input to the AI to a quote output. Test it against real historical jobs until the numbers are right.</p>
+      <p>Hand it over with enough documentation that it can be used, adjusted, and maintained without needing to call anyone. The goal is something you can actually run independently.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="section-wrap section--subtle">
+<div class="section section--wide fade-in">
+  <span class="label">Run the numbers</span>
+  <h2 class="prose" style="font-family:'Inter Tight','Inter',sans-serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-.025em;line-height:1.2;margin-bottom:1.5rem;">What the current approach is costing.</h2>
+
+  <p class="calc-intro">Before deciding anything, it's worth working out what doing it without a proper system actually costs — in time, and in margin. Adjust the numbers to match your reality.</p>
+
+  <div class="calc-layout">
+    <div class="calc-inputs">
+
+      <div class="input-group">
+        <label>Quotes sent per month <span id="val-quotes">15</span></label>
+        <div class="hint">A rough average across busy and quiet periods</div>
+        <input type="range" id="quotes" min="5" max="50" value="15" step="1" />
+      </div>
+
+      <div class="input-group">
+        <label>Average job value <span id="val-jobval">€8,000</span></label>
+        <div class="hint">What a typical quoted job is worth, before any discounting</div>
+        <input type="range" id="jobval" min="500" max="50000" value="8000" step="500" />
+      </div>
+
+      <div class="input-group">
+        <label>Hours spent costing each job <span id="val-hours">3h</span></label>
+        <div class="hint">From reading the spec to sending the quote</div>
+        <input type="range" id="hours" min="0.5" max="8" value="3" step="0.5" />
+      </div>
+
+      <div class="input-group">
+        <label>Value of your time (€/hr) <span id="val-rate">€60</span></label>
+        <div class="hint">What an hour of your time is worth to the business</div>
+        <input type="range" id="rate" min="25" max="200" value="60" step="5" />
+      </div>
+
+      <div class="input-group">
+        <label>Typical margin error per quote <span id="val-error">4%</span></label>
+        <div class="hint">How far off the true cost you think gut-feel quotes tend to be on average</div>
+        <input type="range" id="error" min="1" max="15" value="4" step="0.5" />
+      </div>
+
+    </div>
+
+    <div class="calc-outputs">
+      <h3>Your numbers</h3>
+
+      <div class="output-row">
+        <span class="output-label">Monthly hours spent quoting</span>
+        <span class="output-value" id="out-monthly-hours">—</span>
+      </div>
+      <div class="output-row">
+        <span class="output-label">Annual revenue quoted</span>
+        <span class="output-value" id="out-annual-rev">—</span>
+      </div>
+      <div class="output-row">
+        <span class="output-label">Annual cost of your quoting time</span>
+        <span class="output-value" id="out-time-cost">—</span>
+      </div>
+      <div class="output-row">
+        <span class="output-label">Annual margin at risk from errors</span>
+        <span class="output-value" id="out-margin-risk">—</span>
+      </div>
+
+      <div class="output-hero">
+        <div class="hero-label">Total annual cost of no system</div>
+        <div class="hero-number" id="out-total">—</div>
+        <div class="hero-sub">This is what the current approach costs per year,<br>in time and margin combined.</div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="fade-in">
+  <p style="font-style:italic;">If any of this is relevant, <a href="mailto:aidan@example.com">get in touch</a>.</p>
+</footer>
+
+<script>
+  // ── ACCORDION ──
+  document.querySelectorAll('.acc-trigger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.acc-item');
+      const body = item.querySelector('.acc-body');
+      const isOpen = item.classList.contains('open');
+
+      // close all
+      document.querySelectorAll('.acc-item.open').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.acc-body').style.maxHeight = '0';
+        el.querySelector('.acc-trigger').setAttribute('aria-expanded', 'false');
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // ── CALCULATOR ──
+  function fmt(n, prefix = '€') {
+    return prefix + Math.round(n).toLocaleString('en-IE');
+  }
+
+  function fmtHrs(n) {
+    return n + (n === 1 ? ' hr' : ' hrs');
+  }
+
+  function calc() {
+    const quotes = +document.getElementById('quotes').value;
+    const jobval = +document.getElementById('jobval').value;
+    const hours  = +document.getElementById('hours').value;
+    const rate   = +document.getElementById('rate').value;
+    const error  = +document.getElementById('error').value;
+
+    // display input values
+    document.getElementById('val-quotes').textContent = quotes;
+    document.getElementById('val-jobval').textContent = fmt(jobval);
+    document.getElementById('val-hours').textContent  = hours + 'h';
+    document.getElementById('val-rate').textContent   = fmt(rate);
+    document.getElementById('val-error').textContent  = error + '%';
+
+    const monthlyHours = quotes * hours;
+    const annualRev    = quotes * jobval * 12;
+    const timeCost     = monthlyHours * 12 * rate;
+    const marginRisk   = annualRev * (error / 100);
+    const total        = timeCost + marginRisk;
+
+    document.getElementById('out-monthly-hours').textContent = fmtHrs(monthlyHours);
+    document.getElementById('out-annual-rev').textContent    = fmt(annualRev);
+    document.getElementById('out-time-cost').textContent     = fmt(timeCost);
+    document.getElementById('out-margin-risk').textContent   = fmt(marginRisk);
+    document.getElementById('out-total').textContent         = fmt(total);
+  }
+
+  ['quotes','jobval','hours','rate','error'].forEach(id => {
+    document.getElementById(id).addEventListener('input', calc);
+  });
+
+  calc(); // init
+
+  // ── FADE IN ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
