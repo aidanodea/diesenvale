@@ -1,6 +1,6 @@
 # Diesenvale website: design review
 
-**Open the live site: https://aidanodea.github.io/diesenvale-work/**
+**Open the live site: https://aidanodea.github.io/diesenvale/**
 
 Static, clickable versions of three design concepts (Variant A, Variant B, New website),
 plus the Flow Space configurator. Open the link above and pick one — no download needed.
@@ -8,10 +8,10 @@ Viewing the files here on GitHub shows their source, not the rendered pages.
 
 | | |
 |---|---|
-| Variant A | https://aidanodea.github.io/diesenvale-work/variant-a/ |
-| Variant B | https://aidanodea.github.io/diesenvale-work/variant-b/ |
-| New website | https://aidanodea.github.io/diesenvale-work/new-website/ |
-| Flow configurator | https://aidanodea.github.io/diesenvale-work/flow-configurator/ |
+| Variant A | https://aidanodea.github.io/diesenvale/variant-a/ |
+| Variant B | https://aidanodea.github.io/diesenvale/variant-b/ |
+| New website | https://aidanodea.github.io/diesenvale/new-website/ |
+| Flow configurator | https://aidanodea.github.io/diesenvale/flow-configurator/ |
 
 To preview locally instead: `python3 -m http.server 8000` in this folder, then open
 http://localhost:8000/.
@@ -43,8 +43,8 @@ Fixed 1440 × 900 canvas, so it needs a desktop screen.
 
 ## Quote Agent
 
-Folded in from `aidanodea/diesenvale` (which remains live at
-https://aidanodea.github.io/diesenvale/). A single-page case for an AI costing agent
+Live at https://aidanodea.github.io/diesenvale/quote-agent/. Originally a separate repo, now
+retired. A single-page case for an AI costing agent
 for fabrication quotes: the problem with quoting by instinct, what the agent does, the
 data that has to exist before it can be built, the two-phase process, and a calculator
 estimating the annual cost of having no system.
