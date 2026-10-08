@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta name="robots" content="noindex, nofollow">
-<meta name="viewport" content="width=1440">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta charset="utf-8">
 <title>Flow Space Configurator</title>
 <script src="./support.js"></script>
@@ -18,14 +18,38 @@ button{font:inherit;cursor:pointer;color:inherit}
 button:hover{filter:brightness(.96)}
 button:focus-visible{outline:2px solid #1B1D1F;outline-offset:2px}
 input{font:inherit}
+:root{--fw:1;--fh:1}
+.fit{scale:min(var(--fw),var(--fh))}
+.app{width:100%;height:100vh;height:100dvh;min-height:420px}
+.hdr{flex-wrap:wrap;row-gap:4px}
+@media (max-width:1279px){:root{--fw:.85}.rail{width:236px!important}.insp{width:272px!important}}
+@media (max-width:1099px){:root{--fw:.7}.sub{display:none}}
+@media (max-height:820px){:root{--fh:.9}}
+@media (max-height:720px){:root{--fh:.78}}
+@media (max-height:620px){:root{--fh:.64}}
+@media (max-height:520px){:root{--fh:.5}}
+@media (max-width:860px){
+  :root{--fw:1;--fh:1}
+  .app{height:auto;min-height:100dvh;overflow:visible!important}
+  .hdr{height:auto!important;padding:10px 16px!important}
+  .body{flex-direction:column!important;flex:none!important}
+  .stage{order:1;flex:none!important;height:max(380px,min(64dvh,560px))!important;width:100%}
+  .rail{order:2;width:100%!important;border-right:0!important;border-bottom:1px solid #CFCBBF;overflow:visible!important}
+  .insp{order:3;width:100%!important;border-left:0!important;overflow:visible!important}
+  .rail,.insp{box-sizing:border-box}
+}
+@media (max-width:860px) and (max-height:760px){:root{--fh:.85}}
+@media (max-width:640px){:root{--fw:.8}}
+@media (max-width:520px){:root{--fw:.64}}
+@media (max-width:400px){:root{--fw:.54}}
 </style>
 </helmet>
-<div style="width:1440px;height:900px;box-sizing:border-box;display:flex;flex-direction:column;background:#E9E7E0;color:#1B1D1F;font-family:'IBM Plex Sans',system-ui,sans-serif;overflow:hidden">
+<div class="app" style="box-sizing:border-box;display:flex;flex-direction:column;background:#E9E7E0;color:#1B1D1F;font-family:'IBM Plex Sans',system-ui,sans-serif;overflow:hidden">
 
-  <header style="height:60px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:#1B1D1F;color:#F4F2EC">
+  <header class="hdr" style="min-height:60px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:#1B1D1F;color:#F4F2EC">
     <div style="display:flex;align-items:baseline;gap:16px">
       <h1 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:28px;letter-spacing:.03em;text-transform:uppercase">Flow Space</h1>
-      <span style="font-size:13px;color:#CFCCC2">Rathgoggan Middle, Co. Cork &middot; 9 &times; 20 m shell &middot; every internal wall is movable &middot; doors are 750 mm</span>
+      <span class="sub" style="font-size:13px;color:#CFCCC2">Rathgoggan Middle, Co. Cork &middot; 13 &times; 9.5 m shell &middot; every internal wall is movable &middot; doors are 750 mm</span>
     </div>
     <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:#CFCCC2">
       <span>Layout</span>
@@ -33,9 +57,9 @@ input{font:inherit}
     </div>
   </header>
 
-  <div style="flex:1;min-height:0;display:flex">
+  <div class="body" style="flex:1;min-height:0;display:flex">
 
-    <aside style="width:272px;flex:none;box-sizing:border-box;padding:18px 20px;display:flex;flex-direction:column;gap:18px;background:#F7F6F1;border-right:1px solid #CFCBBF;overflow-y:auto">
+    <aside class="rail" style="width:272px;flex:none;box-sizing:border-box;padding:18px 20px;display:flex;flex-direction:column;gap:18px;background:#F7F6F1;border-right:1px solid #CFCBBF;overflow-y:auto">
       <section style="display:flex;flex-direction:column;gap:8px">
         <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#5B5E62">Layout</h2>
         <sc-for list="{{layouts}}" as="l" hint-placeholder-count="3">
@@ -73,12 +97,12 @@ input{font:inherit}
       </section>
     </aside>
 
-    <main style="flex:1;min-width:0;position:relative;background:#E9E7E0;background-image:radial-gradient(rgba(27,29,31,.13) 1px,transparent 1px);background-size:24px 24px">
+    <main class="stage" style="flex:1;min-width:0;position:relative;background:#E9E7E0;background-image:radial-gradient(rgba(27,29,31,.13) 1px,transparent 1px);background-size:24px 24px">
 
       <div style="position:absolute;left:0;right:0;top:0;bottom:0;overflow:hidden;display:{{modelDisplay}}">
-        <div style="position:absolute;left:50%;top:50%;width:288px;height:640px;margin-left:-144px;margin-top:-290px;transform-style:preserve-3d;{{worldCss}}">
+        <div class="fit" style="position:absolute;left:50%;top:50%;width:304px;height:416px;margin-left:-152px;margin-top:-188px;transform-style:preserve-3d;{{worldCss}}">
 
-          <div style="position:absolute;left:0px;top:0px;width:288px;height:640px;background-color:#F3F1EA;background-image:linear-gradient(rgba(27,29,31,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(27,29,31,.06) 1px,transparent 1px);background-size:32px 32px;box-shadow:0 0 0 7px #CFCBBF,0 0 40px 10px rgba(27,29,31,.18)"></div>
+          <div style="position:absolute;left:0px;top:0px;width:304px;height:416px;background-color:#F3F1EA;background-image:linear-gradient(rgba(27,29,31,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(27,29,31,.06) 1px,transparent 1px);background-size:32px 32px;box-shadow:0 0 0 7px #CFCBBF,0 0 40px 10px rgba(27,29,31,.18)"></div>
 
           <sc-for list="{{zones3d}}" as="z" hint-placeholder-count="12">
             <div onClick="{{z.pick}}" style="position:absolute;cursor:pointer;box-sizing:border-box;transform:translateZ(1px);display:flex;align-items:center;justify-content:center;text-align:center;{{z.css}}">
@@ -127,7 +151,7 @@ input{font:inherit}
       <div onPointerDown="{{rotDown}}" onPointerMove="{{rotMove}}" onPointerUp="{{rotUp}}" onPointerLeave="{{rotUp}}" style="position:absolute;left:0;right:0;top:0;bottom:0;touch-action:none;{{rotCss}}"></div>
 
       <div style="position:absolute;left:0;right:0;top:0;bottom:0;display:{{editDisplay}}">
-        <div onPointerDown="{{editDown}}" onPointerMove="{{editMove}}" onPointerUp="{{editUp}}" onPointerLeave="{{editUp}}" style="position:absolute;left:50%;top:50%;width:288px;height:640px;margin-left:-144px;margin-top:-280px;background-color:#F3F1EA;background-image:linear-gradient(rgba(27,29,31,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(27,29,31,.08) 1px,transparent 1px);background-size:32px 32px;box-shadow:0 0 0 1px #8F8B7E;touch-action:none;user-select:none;cursor:{{editCursor}}">
+        <div class="fit" onPointerDown="{{editDown}}" onPointerMove="{{editMove}}" onPointerUp="{{editUp}}" onPointerLeave="{{editUp}}" style="position:absolute;left:50%;top:50%;width:304px;height:416px;margin-left:-152px;margin-top:-208px;background-color:#F3F1EA;background-image:linear-gradient(rgba(27,29,31,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(27,29,31,.08) 1px,transparent 1px);background-size:32px 32px;box-shadow:0 0 0 1px #8F8B7E;touch-action:none;user-select:none;cursor:{{editCursor}}">
           <sc-for list="{{editZones}}" as="z" hint-placeholder-count="12">
             <div onPointerDown="{{z.down}}" style="position:absolute;box-sizing:border-box;display:flex;align-items:center;justify-content:center;text-align:center;{{z.css}}">
               <span style="pointer-events:none;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#1B1D1F">{{z.label}}</span>
@@ -144,8 +168,8 @@ input{font:inherit}
           <sc-for list="{{editDims}}" as="d" hint-placeholder-count="1">
             <div style="position:absolute;pointer-events:none;padding:1px 5px;border-radius:3px;background:#1B1D1F;color:#F4F2EC;font-family:'IBM Plex Mono',monospace;font-size:11px;white-space:nowrap;{{d.css}}">{{d.text}}</div>
           </sc-for>
-          <span style="position:absolute;left:0;right:0;top:-22px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5B5E62;pointer-events:none">9.0 m</span>
-          <span style="position:absolute;left:-52px;top:310px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5B5E62;pointer-events:none">20.0 m</span>
+          <span style="position:absolute;left:0;right:0;top:-22px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5B5E62;pointer-events:none">9.5 m</span>
+          <span style="position:absolute;left:-52px;top:200px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5B5E62;pointer-events:none">13.0 m</span>
         </div>
       </div>
 
@@ -165,11 +189,11 @@ input{font:inherit}
       <div style="position:absolute;left:20px;bottom:16px;right:20px;font-size:12px;line-height:1.45;color:#4A4D51;pointer-events:none">{{hint}}</div>
     </main>
 
-    <aside style="width:316px;flex:none;box-sizing:border-box;padding:18px 20px;display:flex;flex-direction:column;gap:16px;background:#F7F6F1;border-left:1px solid #CFCBBF;overflow:hidden">
+    <aside class="insp" style="width:316px;flex:none;box-sizing:border-box;padding:18px 20px;display:flex;flex-direction:column;gap:16px;background:#F7F6F1;border-left:1px solid #CFCBBF;overflow:hidden">
       <section style="display:{{miniDisplay}};flex-direction:column;gap:8px;flex:none">
         <h2 style="margin:0;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#5B5E62">Plan</h2>
         <div style="display:flex;gap:16px;align-items:flex-start">
-          <div onPointerMove="{{planMove}}" onPointerUp="{{planUp}}" onPointerLeave="{{planUp}}" style="position:relative;flex:none;width:153px;height:340px;background:#F3F1EA;box-shadow:0 0 0 1px #BDB9AD;touch-action:none;user-select:none">
+          <div onPointerMove="{{planMove}}" onPointerUp="{{planUp}}" onPointerLeave="{{planUp}}" style="position:relative;flex:none;width:162px;height:221px;background:#F3F1EA;box-shadow:0 0 0 1px #BDB9AD;touch-action:none;user-select:none">
             <sc-for list="{{planZones}}" as="z" hint-placeholder-count="12">
               <div onPointerDown="{{z.down}}" style="position:absolute;cursor:move;box-sizing:border-box;display:flex;align-items:center;justify-content:center;text-align:center;{{z.css}}">
                 <span style="pointer-events:none;font-size:10px;line-height:1.1;color:#1B1D1F">{{z.label}}</span>
@@ -260,7 +284,7 @@ input{font:inherit}
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
-const S = 32, PS = 17, EPS = 32, ACC = '#F5A400', INK = '#1B1D1F', BW = 9, BD = 20;
+const S = 32, PS = 17, EPS = 32, ACC = '#F5A400', INK = '#1B1D1F', BW = 9.5, BD = 13;
 
 const ZT = {
   focus:   { n: 'Lockdown focus', c: '#3556B5' },
@@ -315,7 +339,42 @@ function build(key, patch, zones, add, remove, doors) {
   (add || []).forEach(r => walls.push({ id: r[0], a: [r[1], r[2]], b: [r[3], r[4]], k: 'i', s: 'solid', ws: null }));
   const kept = walls.filter(w => (remove || []).indexOf(w.id) < 0);
   Object.keys(patch).forEach(id => { Object.assign(kept.find(w => w.id === id), patch[id]); });
-  return { preset: key, walls: kept, zones, doors: DOORS.concat(doors || []).map(d => d.slice()) };
+  return fit({ preset: key, walls: kept, zones, doors: DOORS.concat(doors || []).map(d => d.slice()) });
+}
+// The layouts are drawn on a 9 x 20 m sketch. fit() stretches them to the real shell (BW x BD) and
+// re-snaps everything to the 0.25 m grid, keeping every door gap at exactly 750 mm.
+const SRC_W = 9, SRC_D = 20;
+function fit(m) {
+  const pairs = [[], []];
+  m.doors.forEach(d => { if (d[2] === 0.75) pairs[0].push([d[0], d[0] + 0.75]); if (d[3] === 0.75) pairs[1].push([d[1], d[1] + 0.75]); });
+  pairs[0].push([4.75, 5.5]);
+  const maps = [0, 1].map(ax => {
+    const k = (ax ? BD / SRC_D : BW / SRC_W), tot = ax ? SRC_D : SRC_W;
+    const vals = new Set([0, tot]);
+    const add = (v) => vals.add(Math.round(v * 1000) / 1000);
+    m.walls.forEach(w => { add(w.a[ax]); add(w.b[ax]); });
+    m.zones.forEach(z => { add(ax ? z.y : z.x); add(ax ? z.y + z.h : z.x + z.w); });
+    pairs[ax].forEach(pr => { add(pr[0]); add(pr[1]); });
+    const sorted = Array.from(vals).sort((a, b) => a - b), f = {};
+    let prev = null;
+    sorted.forEach(v => {
+      const pr = pairs[ax].find(q => Math.abs(q[1] - v) < 1e-6 && f[q[0]] !== undefined);
+      let r = pr ? f[pr[0]] + 0.75 : snap(v * k);
+      if (prev !== null && r < prev) r = prev;
+      if (v === tot) r = tot * k;
+      f[v] = r; prev = r;
+    });
+    return (v) => { const r = f[Math.round(v * 1000) / 1000]; return r === undefined ? snap(v * k) : r; };
+  });
+  const fx = maps[0], fy = maps[1];
+  m.walls.forEach(w => { w.a = [fx(w.a[0]), fy(w.a[1])]; w.b = [fx(w.b[0]), fy(w.b[1])]; });
+  m.walls = m.walls.filter(w => w.a[0] !== w.b[0] || w.a[1] !== w.b[1]);
+  m.zones.forEach(z => { const x2 = fx(z.x + z.w), y2 = fy(z.y + z.h); z.x = fx(z.x); z.y = fy(z.y); z.w = x2 - z.x; z.h = y2 - z.y; });
+  m.doors.forEach(d => {
+    if (d[2] === 0.75) d[0] = fx(d[0]); else d[0] = fx(d[0] + d[2] / 2) - d[2] / 2;
+    if (d[3] === 0.75) d[1] = fy(d[1]); else d[1] = fy(d[1] + d[3] / 2) - d[3] / 2;
+  });
+  return m;
 }
 const LAYOUTS = {
   today: () => build('today', {}, [
@@ -363,19 +422,20 @@ function furnish(z) {
   const stool = (x, y) => out.push({ k: 'box', x, y, w: 0.35, h: 0.35, ht: 0.65, c: '#4B4F55' });
   const bars = (cols) => cols.map((c, i) => 'linear-gradient(' + c + ',' + c + ') ' + (8 + i * 22) + '% 85%/14% ' + (30 + (i * 37) % 45) + '% no-repeat').join(',') + ',#1F2933';
   const panel = (x, y, w, h, zb, ht, c, bg) => out.push({ k: 'box', x, y, w, h, ht, zb, c, bg });
-  if (z.t === 'flow' && z.w >= 5.5 && z.h >= 10) {
-    const tc = '#D8C7A0';
-    [z.x + 0.9, z.x + 3.2].forEach(tx => [2.4, 5.2, 8.0].forEach(dy => {
+  if (z.t === 'flow' && z.w >= 5.5 && z.h >= 6.5) {
+    const tc = '#D8C7A0', ex = z.x + z.w - 0.11, rows = z.h >= 10 ? [2.4, 5.2, 8.0] : [1.9, 4.3];
+    [z.x + 0.9, z.x + 3.2].forEach(tx => rows.forEach(dy => {
       const ty = z.y + dy;
       box(tx, ty, 2.0, 0.9, 1.05, tc);
       stool(tx + 0.4, ty - 0.45); stool(tx + 1.25, ty - 0.45);
       stool(tx + 0.4, ty + 1.0); stool(tx + 1.25, ty + 1.0);
     }));
-    panel(z.x + 0.4, z.y + 0.05, 2.5, 0.06, 0.8, 2.3, '#F4F6F8');
-    panel(z.x + z.w - 0.11, z.y + 6.65, 0.06, 2.0, 0.8, 2.3, '#F4F6F8');
-    panel(z.x + 3.0, z.y + 0.05, 1.25, 0.06, 1.1, 2.1, '#1F2933', bars(['#3DD6A6', '#F5A400', '#5B8DEF']));
-    panel(z.x + z.w - 0.11, z.y + 0.25, 0.06, 2.0, 1.1, 2.1, '#1F2933', bars(['#E5586E', '#3DD6A6', '#F5A400']));
-    panel(z.x + z.w - 0.11, z.y + 3.75, 0.06, 1.75, 1.1, 2.1, '#1F2933', bars(['#5B8DEF', '#F5A400', '#3DD6A6']));
+    const bw = bars(['#3DD6A6', '#F5A400', '#5B8DEF']), bw2 = bars(['#E5586E', '#3DD6A6', '#F5A400']);
+    panel(z.x + 0.3, z.y + 0.05, 2.0, 0.06, 0.8, 2.3, '#F4F6F8');
+    panel(z.x + 2.65, z.y + 0.05, 1.7, 0.06, 1.1, 2.1, '#1F2933', bw);
+    panel(ex, z.y + 0.15, 0.06, 1.25, 1.1, 2.1, '#1F2933', bw2);
+    panel(ex, z.y + 2.4, 0.06, 1.0, 1.1, 2.1, '#1F2933', bw);
+    panel(ex, z.y + 4.35, 0.06, 1.05, 0.8, 2.3, '#F4F6F8');
     return out;
   }
   if (/wc/i.test(L)) {
@@ -612,6 +672,9 @@ class Component extends DCLogic {
     const pd = (info) => (e) => {
       stop(e);
       this._pd = Object.assign({ sx: e.clientX, sy: e.clientY, moved: false }, info);
+      const el = e.currentTarget, rr = el.getBoundingClientRect();
+      const kk = el.offsetWidth > 2 ? rr.width / el.offsetWidth : (el.offsetHeight > 2 ? rr.height / el.offsetHeight : 1);
+      if (kk > 0.2 && kk < 5) this._pd.sc = info.sc * kk;
       set({ sel: { t: info.t, id: info.id } });
     };
     const mkPlan = (sc, tl) => {
@@ -717,7 +780,7 @@ class Component extends DCLogic {
     };
     const pt = (e) => {
       const r = this._dr.rect, ln = lines();
-      return [clamp(snap((e.clientX - r.left) / EPS), 0, BW), clamp(snap((e.clientY - r.top) / EPS), 0, BD)];
+      return [clamp(snap((e.clientX - r.left) / r.width * BW), 0, BW), clamp(snap((e.clientY - r.top) / r.height * BD), 0, BD)];
     };
     const editDown = (e) => {
       if (tool !== 'draw') return;
